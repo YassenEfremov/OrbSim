@@ -20,11 +20,11 @@ option(ORBSIM_BUILD_TESTS "Build tests" OFF)
 # 	src/simulation/integrators/euler.cpp
 # )
 
-add_executable(orbsim
-	src/simulation/integrators/euler.cpp
-	src/simulation/math_obj.cpp
-	src/main.cpp
-)
+# add_executable(orbsim
+# 	src/simulation/integrators/euler.cpp
+# 	src/simulation/math_obj.cpp
+# 	src/main.cpp
+# )
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND ORBSIM_BUILD_TESTS)
 	include(CTest)
@@ -32,11 +32,11 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND ORBSIM_BUILD_TESTS)
     add_subdirectory(test)
 endif()
 
-target_include_directories(orbsim
-	PRIVATE
-		${PROJECT_SOURCE_DIR}/src
-		${PROJECT_BINARY_DIR}
-)
+# target_include_directories(orbsim
+# 	PRIVATE
+# 		${PROJECT_SOURCE_DIR}/src
+# 		${PROJECT_BINARY_DIR}
+# )
 
 # target_link_libraries(orbsim
 # 	PRIVATE
@@ -44,10 +44,10 @@ target_include_directories(orbsim
 # )
 
 
-install(
-	TARGETS orbsim
-	DESTINATION bin
-)
+# install(
+# 	TARGETS orbsim
+# 	DESTINATION bin
+# )
 
 # install(
 # 	FILES ${PROJECT_SOURCE_DIR}/data/
