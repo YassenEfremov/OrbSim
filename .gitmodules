@@ -1,0 +1,9 @@
+# [submodule "lib/spdlog"]
+# 	path = lib/spdlog
+# 	url = https://github.com/gabime/spdlog
+# [submodule "lib/json"]
+# 	path = lib/json
+# 	url = https://github.com/nlohmann/json
+[submodule "lib/Catch2"]
+	path = lib/Catch2
+	url = https://github.com/catchorg/Catch2
