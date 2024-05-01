@@ -24,12 +24,23 @@ Vec3 Vec3::operator-(const Vec3 &rhs) {
 	};
 }
 
+Vec3 &Vec3::operator*=(double scalar) {
+	this->x *= scalar;
+	this->y *= scalar;
+	this->z *= scalar;
+	return *this;
+}
+
 Vec3 Vec3::operator/(double scalar) {
 	return Vec3{
 		this->x / scalar,
 		this->y / scalar,
 		this->z / scalar
 	};
+}
+
+Vec3 &Vec3::operator/=(double scalar) {
+	return *this *= 1/scalar;
 }
 
 double Vec3::len() {

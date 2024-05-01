@@ -6,6 +6,8 @@
 
 namespace orbsim {
 
+const double G = 6.67e-11;
+
 struct Vec3 {
 	double x;
 	double y;
@@ -13,7 +15,9 @@ struct Vec3 {
 
 	Vec3 operator+(const Vec3 &rhs);
 	Vec3 operator-(const Vec3 &rhs);
+	Vec3 &operator*=(double scalar);
 	Vec3 operator/(double scalar);
+	Vec3 &operator/=(double scalar);
 
 	double len();
 	std::string to_str();
