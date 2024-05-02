@@ -23,6 +23,7 @@ option(ORBSIM_BUILD_TESTS "Build tests" OFF)
 add_executable(orbsim
 	src/simulation/integrators/euler.cpp
 	src/simulation/integrators/verlet.cpp
+	src/simulation/integrators/rk4.cpp
 	src/simulation/math_obj.cpp
 	src/main.cpp
 )

@@ -1,5 +1,6 @@
 #include "simulation/integrators/euler.hpp"
 #include "simulation/integrators/verlet.hpp"
+#include "simulation/integrators/rk4.hpp"
 #include "simulation/math_obj.hpp"
 
 #include <iostream>
@@ -20,8 +21,8 @@ int main() {
 
 	// Integrate
 
-	orbsim::Verlet v(M, R0, x0, v0, t_i, t_f, t_f/10);
-	v.integrate();
+	orbsim::RK4 rk(M, R0, x0, v0, t_i, t_f, t_f/10);
+	rk.integrate();
 	// v.save_to_file("orbit.txt");
 
 	return 0;
