@@ -15,6 +15,7 @@ struct Vec3 {
 
 	Vec3 operator+(const Vec3 &rhs);
 	Vec3 operator-(const Vec3 &rhs);
+	Vec3 operator-();
 	Vec3 &operator*=(double scalar);
 	Vec3 operator/(double scalar);
 	Vec3 &operator/=(double scalar);

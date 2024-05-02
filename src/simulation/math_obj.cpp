@@ -24,6 +24,14 @@ Vec3 Vec3::operator-(const Vec3 &rhs) {
 	};
 }
 
+Vec3 Vec3::operator-() {
+	return Vec3{
+		- this->x,
+		- this->y,
+		- this->z
+	};
+}
+
 Vec3 &Vec3::operator*=(double scalar) {
 	this->x *= scalar;
 	this->y *= scalar;
