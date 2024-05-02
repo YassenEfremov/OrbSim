@@ -21,9 +21,12 @@ int main() {
 
 	// Integrate
 
-	orbsim::RK4 rk(M, R0, x0, v0, t_i, t_f, t_f/10);
-	rk.integrate();
+	orbsim::Integrator *i = new orbsim::RK4(M, R0, x0, v0, t_i, t_f, t_f/10);
+
+	i->integrate();
 	// v.save_to_file("orbit.txt");
+
+	delete i;
 
 	return 0;
 }
