@@ -33,9 +33,9 @@ void Verlet::integrate() {
 	for (int i = 0; i < steps - 1; i++) {
 		std::cout << pos_arr[i].to_str() << " " << vel_arr[i].to_str() << "\n";
 
-		Vec3 vel_half = this->vel_arr[i] + (- (M * G * this->pos_arr[i]) / (std::pow(this->pos_arr[i].len(), 3))) * delta_t/2;
+		Vec3 vel_half = this->vel_arr[i] + (- (M * G * this->pos_arr[i]) / (std::pow(this->pos_arr[i].len(), 3))) * (delta_t/2);
 		this->pos_arr[i + 1] = this->pos_arr[i] + (vel_half) * delta_t;
-		this->vel_arr[i + 1] = vel_half + (- (M * G * this->pos_arr[i + 1]) / (std::pow(this->pos_arr[i + 1].len(), 3))) * delta_t/2;
+		this->vel_arr[i + 1] = vel_half + (- (M * G * this->pos_arr[i + 1]) / (std::pow(this->pos_arr[i + 1].len(), 3))) * (delta_t/2);
 
 		// Convert back to kilometers
 		this->pos_arr[i] /= 1000;
