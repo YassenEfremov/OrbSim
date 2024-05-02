@@ -32,8 +32,9 @@ Euler::~Euler() {
 void Euler::integrate() {
 	for (int i = 0; i < steps - 1; i++) {
 		std::cout << pos_arr[i].to_str() << " " << vel_arr[i].to_str() << "\n";
+
 		this->pos_arr[i + 1] = this->pos_arr[i] + (this->vel_arr[i]) * delta_t;
-		this->vel_arr[i + 1] = this->vel_arr[i] + ((- M * G * this->pos_arr[i]) / (std::pow(this->pos_arr[i].len(), 3))) * delta_t;
+		this->vel_arr[i + 1] = this->vel_arr[i] + (- (M * G * this->pos_arr[i]) / (std::pow(this->pos_arr[i].len(), 3))) * delta_t;
 
 		// Convert back to kilometers
 		this->pos_arr[i] /= 1000;
