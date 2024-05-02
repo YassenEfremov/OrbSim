@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 project(orbsim
-	VERSION 0.1.0
+	VERSION 0.2.0
 	DESCRIPTION "A simple orbital simulator"
 	HOMEPAGE_URL "https://github.com/YassenEfremov/OrbSim"
 	LANGUAGES CXX
@@ -22,6 +22,7 @@ option(ORBSIM_BUILD_TESTS "Build tests" OFF)
 
 add_executable(orbsim
 	src/simulation/integrators/euler.cpp
+	src/simulation/integrators/verlet.cpp
 	src/simulation/math_obj.cpp
 	src/main.cpp
 )
