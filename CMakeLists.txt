@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 project(orbsim
-	VERSION 0.2.0
+	VERSION 0.3.0
 	DESCRIPTION "A simple orbital simulator"
 	HOMEPAGE_URL "https://github.com/YassenEfremov/OrbSim"
 	LANGUAGES CXX
