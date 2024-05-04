@@ -20,7 +20,7 @@ option(ORBSIM_BUILD_TESTS "Build tests" OFF)
 # 	src/simulation/integrators/euler.cpp
 # )
 
-add_executable(orbsim
+add_executable(orbsim WIN32
 	# src/simulation/integrators/euler.cpp
 	# src/simulation/integrators/integrator.cpp
 	# src/simulation/integrators/verlet.cpp
