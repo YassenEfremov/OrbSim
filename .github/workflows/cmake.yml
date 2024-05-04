@@ -34,16 +34,15 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - if: matrix.os == 'ubuntu-latest'
+      - if: matrix.os == 'windows-latest'
         run: |
-          cd ${{github.workspace}}/build
           Invoke-WebRequest https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.4/wxWidgets-3.2.4-headers.7z -OutFile C:\wxWidgets-3.2.4-headers.7z
           Invoke-WebRequest https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.4/wxMSW-3.2.4_vc14x_x64_Dev.7z -OutFile C:\wxMSW-3.2.4_vc14x_x64_Dev.7z
           Invoke-WebRequest https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.4/wxMSW-3.2.4_vc14x_x64_ReleaseDLL.7z -OutFile C:\wxMSW-3.2.4_vc14x_x64_ReleaseDLL.7z
-          Expand-7ZipArchive wxWidgets-3.2.4-headers.7z -DestinationPath C:\wxWidgets-3.2.4
-          Expand-7ZipArchive wxMSW-3.2.4_vc14x_x64_Dev.7z -DestinationPath C:\wxWidgets-3.2.4
-          Expand-7ZipArchive wxMSW-3.2.4_vc14x_x64_ReleaseDLL.7z -DestinationPath C:\wxWidgets-3.2.4
-      - if: matrix.os == 'windows-latest'
+          Expand-7ZipArchive C:\wxWidgets-3.2.4-headers.7z -DestinationPath C:\wxWidgets-3.2.4
+          Expand-7ZipArchive C:\wxMSW-3.2.4_vc14x_x64_Dev.7z -DestinationPath C:\wxWidgets-3.2.4
+          Expand-7ZipArchive C:\wxMSW-3.2.4_vc14x_x64_ReleaseDLL.7z -DestinationPath C:\wxWidgets-3.2.4
+      - if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt install libwxgtk3.0-gtk3-dev
 
