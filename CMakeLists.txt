@@ -21,12 +21,13 @@ option(ORBSIM_BUILD_TESTS "Build tests" OFF)
 # )
 
 add_executable(orbsim
-	src/simulation/integrators/euler.cpp
-	src/simulation/integrators/integrator.cpp
-	src/simulation/integrators/verlet.cpp
-	src/simulation/integrators/rk4.cpp
-	src/simulation/math_obj.cpp
-	src/main.cpp
+	# src/simulation/integrators/euler.cpp
+	# src/simulation/integrators/integrator.cpp
+	# src/simulation/integrators/verlet.cpp
+	# src/simulation/integrators/rk4.cpp
+	# src/simulation/math_obj.cpp
+	# src/main.cpp
+	src/gui/main.cpp
 )
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND ORBSIM_BUILD_TESTS)
@@ -41,10 +42,13 @@ target_include_directories(orbsim
 		${PROJECT_BINARY_DIR}
 )
 
-# target_link_libraries(orbsim
-# 	PRIVATE
-# 		liborbsim
-# )
+find_package(wxWidgets REQUIRED COMPONENTS net core base)
+include(${wxWidgets_USE_FILE})
+
+target_link_libraries(orbsim
+	PRIVATE
+		${wxWidgets_LIBRARIES}
+)
 
 
 install(
