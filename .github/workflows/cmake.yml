@@ -39,7 +39,7 @@ jobs:
           choco install qt6-base-dev
       - if: matrix.os == 'ubuntu-latest'
         run: |
-          sudo apt install libwxgtk3.0-gtk3-dev
+          sudo apt install qt6-base-dev
 
       - run: git config --global core.autocrlf input
       - uses: actions/checkout@v3
