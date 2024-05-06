@@ -34,13 +34,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - if: matrix.os == 'windows-latest'
-        run: |
-          choco install qt6-base-dev
-      - if: matrix.os == 'ubuntu-latest'
-        run: |
-          sudo apt install qt6-base-dev
-
+      - uses: jurplel/install-qt-action@v3
       - run: git config --global core.autocrlf input
       - uses: actions/checkout@v3
         with:
