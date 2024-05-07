@@ -17,5 +17,5 @@ jobs:
       - name: Check for version increment
         # Line 3 in CMakeLists.txt contains the project version
         run: |
-          git switch ${{ github.event.pull_request.head.ref }}
+          git switch ${{ github.event.pull_request.base.ref }}
           [[ $(git log -L3,3:CMakeLists.txt master..HEAD) ]]
