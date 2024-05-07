@@ -16,6 +16,4 @@ jobs:
 
       - name: Check for version increment
         # Line 3 in CMakeLists.txt contains the project version
-        run: |
-          git switch ${{ github.ref_name }}
-          [[ $(git log -L3,3:CMakeLists.txt master..HEAD) ]]
+        run: "[[ $(git log -L3,3:CMakeLists.txt master..${{ github.ref_name }}) ]]"
