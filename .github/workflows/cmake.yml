@@ -1,28 +1,13 @@
 name: CMake
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  push
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
 
 jobs:
-  # increment-version:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - run: git config --global core.autocrlf input
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         submodules: recursive
-  
-  #   # - name: Compare version
-  #   #     run: 
-
   build:
     strategy:
       matrix:
@@ -38,7 +23,7 @@ jobs:
         with:
           version: '6.7.0'
       - run: git config --global core.autocrlf input
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -56,3 +41,18 @@ jobs:
         # Execute tests defined by the CMake configuration.
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest -C ${{env.BUILD_TYPE}}
+
+  check-version:
+    if: github.ref_name != 'master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: git config --global core.autocrlf input
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Check for version increment
+        # Line 3 in CMakeLists.txt contains the project version
+        run: "[[ $(git log -L3,3:CMakeLists.txt remotes/origin/master..remotes/origin/${{ github.ref_name }}) ]]"
