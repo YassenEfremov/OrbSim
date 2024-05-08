@@ -58,6 +58,4 @@ jobs:
 
       - name: Check for version increment
         # Line 3 in CMakeLists.txt contains the project version
-        run: |
-          git log --graph --oneline
-          [[ $(git log -L3,3:CMakeLists.txt master..HEAD) ]]
+        run: "[[ $(git log -L3,3:CMakeLists.txt remotes/origin/master..remotes/origin/${{ github.ref_name }}) ]]"
