@@ -19,6 +19,7 @@ public:
 
 	virtual void integrate() = 0;
 
+	int get_steps() const;
 	double *get_time_arr() const;
 	Vec3 *get_pos_arr() const;
 	Vec3 *get_vel_arr() const;

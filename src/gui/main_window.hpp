@@ -1,4 +1,5 @@
 #include <QMainWindow>
+#include <QWidget>
 
 
 QT_BEGIN_NAMESPACE
@@ -15,8 +16,10 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
+	void simulate();
+	void load_example_values();
+
 private:
 	Ui::MainWindow *ui;
-	QString currentFile;
 };
 
