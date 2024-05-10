@@ -43,7 +43,7 @@ jobs:
         run: ctest -C ${{env.BUILD_TYPE}}
 
   check-version:
-    if: github.ref_name != 'master'
+    if: github.ref_type == 'branch' && github.ref_name != 'master'
     runs-on: ubuntu-latest
 
     steps:
