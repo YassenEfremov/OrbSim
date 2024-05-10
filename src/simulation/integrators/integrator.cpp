@@ -29,6 +29,7 @@ Integrator::~Integrator() {
 	delete[] this->vel_arr;
 }
 
+int Integrator::get_steps() const { return this->steps; }
 double *Integrator::get_time_arr() const { return this->time_arr; }
 Vec3 *Integrator::get_pos_arr() const { return this->pos_arr; }
 Vec3 *Integrator::get_vel_arr() const { return this->vel_arr; }

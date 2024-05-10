@@ -24,8 +24,6 @@ void RK4::integrate() {
 	Vec3 vel_temp;
 
 	for (int i = 0; i < steps - 1; i++) {
-		std::cout << pos_arr[i].to_str() << " " << vel_arr[i].to_str() << "\n";
-
 		rk_slopes[0].pos = vel_arr[i];
 		rk_slopes[0].vel = - (M * G * this->pos_arr[i]) / (std::pow(this->pos_arr[i].len(), 3));
 

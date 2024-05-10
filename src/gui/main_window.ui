@@ -59,16 +59,42 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="PosSpinBoxX">
+            <property name="decimals">
+             <number>8</number>
+            </property>
+            <property name="minimum">
+             <double>-300000.000000000000000</double>
+            </property>
             <property name="maximum">
              <double>300000.000000000000000</double>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QDoubleSpinBox" name="PosSpinBoxY"/>
+           <widget class="QDoubleSpinBox" name="PosSpinBoxY">
+            <property name="decimals">
+             <number>8</number>
+            </property>
+            <property name="minimum">
+             <double>-300000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>300000.000000000000000</double>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QDoubleSpinBox" name="PosSpinBoxZ"/>
+           <widget class="QDoubleSpinBox" name="PosSpinBoxZ">
+            <property name="decimals">
+             <number>8</number>
+            </property>
+            <property name="minimum">
+             <double>-300000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>300000.000000000000000</double>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -86,16 +112,42 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="VelSpinBoxX">
+            <property name="decimals">
+             <number>8</number>
+            </property>
+            <property name="minimum">
+             <double>-300000.000000000000000</double>
+            </property>
             <property name="maximum">
              <double>300000.000000000000000</double>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QDoubleSpinBox" name="VelSpinBoxY"/>
+           <widget class="QDoubleSpinBox" name="VelSpinBoxY">
+            <property name="decimals">
+             <number>8</number>
+            </property>
+            <property name="minimum">
+             <double>-300000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>300000.000000000000000</double>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QDoubleSpinBox" name="VelSpinBoxZ"/>
+           <widget class="QDoubleSpinBox" name="VelSpinBoxZ">
+            <property name="decimals">
+             <number>8</number>
+            </property>
+            <property name="minimum">
+             <double>-300000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>300000.000000000000000</double>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -154,9 +206,20 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="TimeStepSpinBox"/>
+           <widget class="QSpinBox" name="TimeStepSpinBox">
+            <property name="maximum">
+             <number>100000</number>
+            </property>
+           </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="ExampleValuesButton">
+          <property name="text">
+           <string>Load example values</string>
+          </property>
+         </widget>
         </item>
         <item>
          <spacer name="verticalSpacer">
@@ -263,8 +326,26 @@ p, li { white-space: pre-wrap; }
      <height>22</height>
     </rect>
    </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionasdasd">
+   <property name="text">
+    <string>asdasd</string>
+   </property>
+  </action>
+  <action name="actionopen">
+   <property name="text">
+    <string>open</string>
+   </property>
+  </action>
+  <action name="actionclose">
+   <property name="text">
+    <string>close</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
