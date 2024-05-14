@@ -8,7 +8,7 @@
 
 namespace orbsim {
 
-Vec3 Vec3::operator+(const Vec3 &rhs) {
+Vec3 Vec3::operator+(const Vec3 &rhs) const {
 	return Vec3{
 		this->x + rhs.x,
 		this->y + rhs.y,
@@ -16,7 +16,7 @@ Vec3 Vec3::operator+(const Vec3 &rhs) {
 	};
 }
 
-Vec3 Vec3::operator-(const Vec3 &rhs) {
+Vec3 Vec3::operator-(const Vec3 &rhs) const {
 	return Vec3{
 		this->x - rhs.x,
 		this->y - rhs.y,
@@ -24,7 +24,7 @@ Vec3 Vec3::operator-(const Vec3 &rhs) {
 	};
 }
 
-Vec3 Vec3::operator-() {
+Vec3 Vec3::operator-() const {
 	return Vec3{
 		- this->x,
 		- this->y,
@@ -39,7 +39,7 @@ Vec3 &Vec3::operator*=(double scalar) {
 	return *this;
 }
 
-Vec3 Vec3::operator/(double scalar) {
+Vec3 Vec3::operator/(double scalar) const {
 	return Vec3{
 		this->x / scalar,
 		this->y / scalar,
@@ -51,12 +51,28 @@ Vec3 &Vec3::operator/=(double scalar) {
 	return *this *= 1/scalar;
 }
 
-double Vec3::len() {
+double Vec3::len() const {
 	// use that len = sqrt(dot product with itself)
 	return std::sqrt(x*x + y*y + z*z);
 }
 
-std::string Vec3::to_str() {
+Vec3 Vec3::norm() const {
+	return *this / this->len();
+}
+
+double Vec3::dot(const Vec3 &other) const {
+	return this->x * other.x + this->y * other.y + this->z * other.z;
+}
+
+Vec3 Vec3::cross(const Vec3 &other) const {
+	return Vec3{
+		this->y * other.z - this->z * other.y,
+		this->z * other.x - this->x * other.z,
+		this->x * other.y - this->y * other.x,
+	};
+}
+
+std::string Vec3::to_str() const {
 	std::ostringstream os;
 	os.setf(std::ios::fixed);
 	os.precision(8);
