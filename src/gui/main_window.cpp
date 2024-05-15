@@ -5,6 +5,7 @@
 #include "simulation/integrators/verlet.hpp"	
 #include "simulation/integrators/rk4.hpp"	
 #include "simulation/math_obj.hpp"
+#include "simulation/satellite.hpp"
 
 #include <QMainWindow>
 #include <QWidget>
@@ -33,9 +34,6 @@ void MainWindow::simulate() {
 
 	// Initial conditions
 
-	double M = 5.972e24;	// Earth Mass in [kg]
-	double R0 = 6378.137;	// Earth Radius in [km]
-
 	orbsim::Vec3 x0{
 		ui->PosSpinBoxX->value(),
 		ui->PosSpinBoxY->value(),
@@ -49,15 +47,18 @@ void MainWindow::simulate() {
 
 	double t_i = ui->StartTimeSpinBox->value();
 	double t_f = ui->FinishTimeSpinBox->value();
+	double t_step = t_f/10;
 
 	std::map<QString, std::function<orbsim::Integrator *()>> str_integ {
-		{"Euler", [=]() { return new orbsim::Euler(M, R0, x0, v0, t_i, t_f, t_f/10); }},
-		{"Verlet", [=]() { return new orbsim::Verlet(M, R0, x0, v0, t_i, t_f, t_f/10); }},
-		{"RK4", [=]() { return new orbsim::RK4(M, R0, x0, v0, t_i, t_f, t_f/10); }}
+		{"Euler", [=]() { return new orbsim::Euler(orbsim::M_Earth, orbsim::R_Earth, x0, v0, t_i, t_f, t_step); }},
+		{"Verlet", [=]() { return new orbsim::Verlet(orbsim::M_Earth, orbsim::R_Earth, x0, v0, t_i, t_f, t_step); }},
+		{"RK4", [=]() { return new orbsim::RK4(orbsim::M_Earth, orbsim::R_Earth, x0, v0, t_i, t_f, t_step); }}
 	};
 
 	orbsim::Integrator *integ = str_integ[ui->ChooseIntegrator->currentText()]();
 	integ->integrate();
+
+	orbsim::Satellite sat(x0, v0);	// just for testing
 
 	QString output;
 	for (int i = 0; i < integ->get_steps() - 1; i++) {
@@ -73,14 +74,12 @@ void MainWindow::load_example_values() {
 
 	// Example initial conditions
 
-	double M = 5.972e24;	// Earth Mass in [kg]
-	double R0 = 6378.137;	// Earth Radius in [km]
-
 	orbsim::Vec3 x0{7000, 0.000001, -0.001608};
 	orbsim::Vec3 v0{0.000002, 1.310359, 7.431412};
 
 	double t_i = 0;
 	double t_f = 86400;
+	double t_step = t_f/10;
 
 	ui->PosSpinBoxX->setValue(x0.x);
 	ui->PosSpinBoxY->setValue(x0.y);
@@ -92,5 +91,5 @@ void MainWindow::load_example_values() {
 
 	ui->StartTimeSpinBox->setValue(t_i);
 	ui->FinishTimeSpinBox->setValue(t_f);
-	ui->TimeStepSpinBox->setValue(t_f/10);
+	ui->TimeStepSpinBox->setValue(t_step);
 }

@@ -22,6 +22,7 @@ add_library(liborbsim
 	integrators/verlet.cpp
 	integrators/rk4.cpp
 	math_obj.cpp
+	satellite.cpp
 )
 
 # if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND ORBSIM_BUILD_TESTS)
