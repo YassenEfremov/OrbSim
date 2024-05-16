@@ -27,13 +27,13 @@ public:
 	void save_to_file(const char *filename) const;
 
 protected:
-	double M;
-	double R0;
+	double M;	// [kg]
+	double R0;	// [km]
 	int steps;
 	double delta_t;
 	double *time_arr;
-	Vec3 *pos_arr;
-	Vec3 *vel_arr;
+	Vec3 *pos_arr;	// [km]
+	Vec3 *vel_arr;	// [km]
 
 };
 

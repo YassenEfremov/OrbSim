@@ -6,12 +6,13 @@
 
 namespace orbsim {
 
-const double G = 6.67e-11;
+const double G = 6.67430e-11;
 
+const double M_Sun = 1.989e30;		// Sun Mass in [kg]
 const double M_Earth = 5.972e24;	// Earth Mass in [kg]
 const double R_Earth = 6378.137;	// Earth Radius in [km]
 
-const double PI = 3.14159265;
+const double PI = 3.14159265358979323846;
 
 struct Vec3 {
 	double x;

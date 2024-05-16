@@ -13,8 +13,13 @@ namespace orbsim {
 
 Satellite::Satellite(Vec3 x0, Vec3 v0) : pos(x0), vel(v0) {
 
-	Vec3 r = this->pos;
-	Vec3 v = this->vel;
+	using std::acos;
+	using std::clamp;
+	using std::atan;
+	using std::tan;
+	using std::sqrt;
+	Vec3 r = this->pos * 1000;	// Convert to meters
+	Vec3 v = this->vel * 1000;	// Convert to meters
 
 	// Cartesian state vectors -> Keplerian orbital elements
 	// Steps are described here: https://downloads.rene-schwarz.com/download/M002-Cartesian_State_Vectors_to_Keplerian_Orbit_Elements.pdf
@@ -31,30 +36,30 @@ Satellite::Satellite(Vec3 x0, Vec3 v0) : pos(x0), vel(v0) {
 	// c) Vector pointing towards asc. node and true_anom
 	Vec3 n{-h.y, h.x, 0};
 	this->true_anom = r.dot(v) >= 0 ?
-		std::acos(std::clamp(e.dot(r) / (e.len() * r.len()), -1.0, 1.0))
+		acos(clamp(e.dot(r) / (e.len() * r.len()), -1.0, 1.0))
 		:
-		2*PI - std::acos(std::clamp(e.dot(r) / (e.len() * r.len()), -1.0, 1.0));
+		2*PI - acos(clamp(e.dot(r) / (e.len() * r.len()), -1.0, 1.0));
 	
 	// 2) Inc.
 
-	this->inc = std::acos(h.z / h.len());
+	this->inc = acos(h.z / h.len());
 
 	// 3) Ecc. and ecc. anomaly (second is not currently needed)
 
 	this->ecc = e.len();
-	// double E = 2*std::atan(std::tan(this->true_anom/2) / std::sqrt((1 + this->ecc) / (1 - this->ecc)));
+	// double E = 2*atan(tan(this->true_anom/2) / sqrt((1 + this->ecc) / (1 - this->ecc)));
 
 	// 4) Longitude/Right asc. of asc. node and arg. of periapsis
 
 	this->ri_asc_node = n.y >= 0 ?
-		std::acos(std::clamp(n.x / n.len(), -1.0, 1.0))
+		acos(clamp(n.x / n.len(), -1.0, 1.0))
 		:
-		2*PI - std::acos(std::clamp(n.x / n.len(), -1.0, 1.0));
+		2*PI - acos(clamp(n.x / n.len(), -1.0, 1.0));
 	
 	this->arg_of_per = e.z >= 0 ?
-		std::acos(std::clamp(n.dot(e) / (n.len() * e.len()), -1.0, 1.0))
+		acos(clamp(n.dot(e) / (n.len() * e.len()), -1.0, 1.0))
 		:
-		2*PI - std::acos(std::clamp(n.dot(e) / (n.len() * e.len()), -1.0, 1.0));
+		2*PI - acos(clamp(n.dot(e) / (n.len() * e.len()), -1.0, 1.0));
 	
 	// 5) Mean anomaly (Not currently needed)
 
@@ -63,15 +68,17 @@ Satellite::Satellite(Vec3 x0, Vec3 v0) : pos(x0), vel(v0) {
 	// 6) Semi-major axis
 
 	this->sem_maj_ax = 1 / (2/r.len() - (v.len() * v.len())/mu);
+	this->sem_maj_ax /= 1000;	// Convert back to kilometers
 
-	std::cout << std::setprecision(10)
+
+	std::cout << std::setprecision(15)
+		<< "KEPLERIAN:\n"
 		<< "ecc: " << this->ecc << "\n"
 		<< "sem_maj_ax: " << this->sem_maj_ax << "\n"
 		<< "inc: " << this->inc << "\n"
 		<< "ri_asc_node: " << this->ri_asc_node << "\n"
 		<< "arg_of_per: " << this->arg_of_per << "\n"
 		<< "true_anom: " << this->true_anom << "\n";
-
 }
 
 Satellite::Satellite(double ecc, double sem_maj_ax,
@@ -80,10 +87,71 @@ Satellite::Satellite(double ecc, double sem_maj_ax,
 	: ecc(ecc), sem_maj_ax(sem_maj_ax),
 	  inc(inc), ri_asc_node(ri_asc_node),
 	  arg_of_per(arg_of_per), true_anom(true_anom) {
+	
+	// using std::sin;
+	// using std::cos;
+	// using std::sqrt;
+	// using std::atan2;
+	// double e = this->ecc;
+	// double a = this->sem_maj_ax;
+	// double i = this->inc;
+	// double OM = this->ri_asc_node;
+	// double w = this->arg_of_per;
+	// double ni = this->true_anom;
 
-	// Keplerian orbital elements -> Cartesian state vectors
+	// // double M = atan2(- sqrt(1 - e*e) * sin(ni), - e - cos(ni)) + PI - e*((sqrt(1 - e*e) * sin(ni))/(1 + e*cos(ni)));
 
-	// 1)
+	// // Keplerian orbital elements -> Cartesian state vectors
+
+	// // 1)
+	// double mu = G * M_Earth;
+
+	// // 2) Solve Kepler's equation for the ecc. anom
+
+	// double E = 2 * atan2(sqrt(1 - e) * sin(ni/2), sqrt(1 + e) * cos(ni/2));
+	// std::cout << "E: " << E << "<-------------\n";
+
+	// // 3) Obtain true anom.	(we already have it)
+
+	// // double ni = 2 * atan2(sqrt(1 + e) * sin(E/2), std::sqrt(1 - e) * cos(E/2));
+
+	// // 4) Get distance to central body
+
+	// double r = a * (1 - e * cos(E));
+	// std::cout << "r: " << r << "<-------------\n";
+
+	// // 5) Obtain pos and vel vectors
+
+	// Vec3 pos_o = r * Vec3{
+	// 	cos(ni),
+	// 	sin(ni),
+	// 	0
+	// };
+
+	// Vec3 vel_o = ((sqrt(mu) * a) / r) * Vec3{
+	// 	- sin(E),
+	// 	sqrt(1 - e*e) * cos(E),
+	// 	0
+	// };
+
+	// // 6) Transform to inertial frame
+
+	// auto transform = [=](Vec3 o) {
+	// 	return Vec3{
+	// 		o.x * (cos(w)*cos(OM) - sin(w)*cos(i)*sin(OM)) - o.y * (sin(w)*cos(OM) + cos(w)*cos(i)*sin(OM)),
+	// 		o.x * (cos(w)*sin(OM) + sin(w)*cos(i)*cos(OM)) + o.y * (cos(w)*cos(i)*cos(OM) - sin(w)*sin(OM)),
+	// 		o.x * sin(w)*sin(i) + o.y * cos(w)*sin(i)
+	// 	};
+	// };
+
+	// this->pos = transform(pos_o);
+	// this->vel = transform(vel_o);
+
+
+	// std::cout << std::setprecision(10)
+	// 	<< "CARTESIAN:\n"
+	// 	<< "pos: " << this->pos.to_str() << "\n"
+	// 	<< "vel: " << this->vel.to_str() << "\n";
 }
 
 Vec3 Satellite::get_pos() const { return this->pos; }
