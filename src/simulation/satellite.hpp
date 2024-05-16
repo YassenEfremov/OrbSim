@@ -23,7 +23,7 @@ public:
 private:
 	// Cartesian state vectors
 	Vec3 pos;	// [km]
-	Vec3 vel;	// [km]
+	Vec3 vel;	// [km/s]
 
 	// Keplerian orbital elements
 	double ecc;			// [1]

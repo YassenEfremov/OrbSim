@@ -58,7 +58,11 @@ void MainWindow::simulate() {
 	orbsim::Integrator *integ = str_integ[ui->ChooseIntegrator->currentText()]();
 	integ->integrate();
 
-	orbsim::Satellite sat(x0, v0);	// just for testing
+	// just for testing
+	orbsim::Satellite sat1(x0, v0);
+	orbsim::Satellite sat2(2.82977289672605e-05, 7000.19808952185,
+						   1.396263328559, 4.2146848510894e-08,
+						   6.28181250052071, 0.00137257340076574);
 
 	QString output;
 	for (int i = 0; i < integ->get_steps() - 1; i++) {

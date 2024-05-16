@@ -88,70 +88,65 @@ Satellite::Satellite(double ecc, double sem_maj_ax,
 	  inc(inc), ri_asc_node(ri_asc_node),
 	  arg_of_per(arg_of_per), true_anom(true_anom) {
 	
-	// using std::sin;
-	// using std::cos;
-	// using std::sqrt;
-	// using std::atan2;
-	// double e = this->ecc;
-	// double a = this->sem_maj_ax;
-	// double i = this->inc;
-	// double OM = this->ri_asc_node;
-	// double w = this->arg_of_per;
-	// double ni = this->true_anom;
+	using std::sin;
+	using std::cos;
+	using std::sqrt;
+	using std::atan2;
+	double e = this->ecc;
+	double a = this->sem_maj_ax * 1000;	// Convert to meters
+	double i = this->inc;
+	double OM = this->ri_asc_node;
+	double w = this->arg_of_per;
+	double ni = this->true_anom;
 
-	// // double M = atan2(- sqrt(1 - e*e) * sin(ni), - e - cos(ni)) + PI - e*((sqrt(1 - e*e) * sin(ni))/(1 + e*cos(ni)));
+	// Keplerian orbital elements -> Cartesian state vectors
+	// Steps are described here: https://downloads.rene-schwarz.com/download/M001-Keplerian_Orbit_Elements_to_Cartesian_State_Vectors.pdf
 
-	// // Keplerian orbital elements -> Cartesian state vectors
+	// 1) Mean anomaly (SKIP - don't need it)
 
-	// // 1)
-	// double mu = G * M_Earth;
+	// 2) Solve Kepler's equation for the ecc. anom
 
-	// // 2) Solve Kepler's equation for the ecc. anom
+	double E = 2 * atan2(sqrt(1 - e) * sin(ni/2), sqrt(1 + e) * cos(ni/2));
 
-	// double E = 2 * atan2(sqrt(1 - e) * sin(ni/2), sqrt(1 + e) * cos(ni/2));
-	// std::cout << "E: " << E << "<-------------\n";
+	// 3) Obtain true anom.	(SKIP - already have it)
 
-	// // 3) Obtain true anom.	(we already have it)
+	// 4) Get distance to central body
 
-	// // double ni = 2 * atan2(sqrt(1 + e) * sin(E/2), std::sqrt(1 - e) * cos(E/2));
+	double r = a * (1 - e * cos(E));
 
-	// // 4) Get distance to central body
+	// 5) Obtain pos and vel vectors in orbital frame
 
-	// double r = a * (1 - e * cos(E));
-	// std::cout << "r: " << r << "<-------------\n";
+	Vec3 pos_o = r * Vec3{
+		cos(ni),
+		sin(ni),
+		0
+	};
 
-	// // 5) Obtain pos and vel vectors
+	double mu = G * M_Earth;
+	Vec3 vel_o = (sqrt(mu * a) / r) * Vec3{
+		- sin(E),
+		sqrt(1 - e*e) * cos(E),
+		0
+	};
 
-	// Vec3 pos_o = r * Vec3{
-	// 	cos(ni),
-	// 	sin(ni),
-	// 	0
-	// };
+	// 6) Transform to inertial frame
 
-	// Vec3 vel_o = ((sqrt(mu) * a) / r) * Vec3{
-	// 	- sin(E),
-	// 	sqrt(1 - e*e) * cos(E),
-	// 	0
-	// };
+	auto transform = [=](Vec3 o) {
+		return Vec3{
+			o.x * (cos(w)*cos(OM) - sin(w)*cos(i)*sin(OM)) - o.y * (sin(w)*cos(OM) + cos(w)*cos(i)*sin(OM)),
+			o.x * (cos(w)*sin(OM) + sin(w)*cos(i)*cos(OM)) + o.y * (cos(w)*cos(i)*cos(OM) - sin(w)*sin(OM)),
+			o.x * sin(w)*sin(i) + o.y * cos(w)*sin(i)
+		};
+	};
 
-	// // 6) Transform to inertial frame
-
-	// auto transform = [=](Vec3 o) {
-	// 	return Vec3{
-	// 		o.x * (cos(w)*cos(OM) - sin(w)*cos(i)*sin(OM)) - o.y * (sin(w)*cos(OM) + cos(w)*cos(i)*sin(OM)),
-	// 		o.x * (cos(w)*sin(OM) + sin(w)*cos(i)*cos(OM)) + o.y * (cos(w)*cos(i)*cos(OM) - sin(w)*sin(OM)),
-	// 		o.x * sin(w)*sin(i) + o.y * cos(w)*sin(i)
-	// 	};
-	// };
-
-	// this->pos = transform(pos_o);
-	// this->vel = transform(vel_o);
+	this->pos = transform(pos_o) / 1000;
+	this->vel = transform(vel_o) / 1000;
 
 
-	// std::cout << std::setprecision(10)
-	// 	<< "CARTESIAN:\n"
-	// 	<< "pos: " << this->pos.to_str() << "\n"
-	// 	<< "vel: " << this->vel.to_str() << "\n";
+	std::cout << std::setprecision(10)
+		<< "CARTESIAN:\n"
+		<< "pos: " << this->pos.to_str() << "\n"
+		<< "vel: " << this->vel.to_str() << "\n";
 }
 
 Vec3 Satellite::get_pos() const { return this->pos; }
