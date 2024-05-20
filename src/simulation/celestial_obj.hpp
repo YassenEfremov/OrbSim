@@ -12,8 +12,8 @@ struct CelestialObj {
 };
 
 const CelestialObj Earth{
-	.mass = 5.972e24,	// [kg]
-	.radius = 6378.137	// [km]
+	5.972e24,	// mass in [kg]
+	6378.137	// radius in [km]
 };
 
 // const double M_Sun = 1.989e30;		// Sun Mass in [kg]

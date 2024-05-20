@@ -23,8 +23,8 @@ struct SimData {
 class Satellite {
 
 public:
-	Satellite(CartElem cart_elem = {.pos = Vec3{7000, 0.000001, -0.001608},
-									.vel = Vec3{0.000002, 1.310359, 7.431412}},
+	Satellite(CartElem cart_elem = {Vec3{7000, 0.000001, -0.001608},
+									Vec3{0.000002, 1.310359, 7.431412}},
 			  std::string integ_name = "RK4", CelestialObj cel_obj = Earth,
 			  double t_start = 0, double t_end = 86400, double t_steps = 8640);
 	Satellite(KeplElem kepl_elem,

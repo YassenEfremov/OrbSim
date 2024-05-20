@@ -8,6 +8,7 @@ project(orbsim
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 # set(BUILD_SHARED_LIBS OFF)
 
 option(ORBSIM_BUILD_TESTS "Build tests" OFF)
@@ -18,6 +19,7 @@ option(ORBSIM_BUILD_TESTS "Build tests" OFF)
 
 add_subdirectory(src/simulation)
 add_subdirectory(src/gui)
+add_subdirectory(src/cli)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND ORBSIM_BUILD_TESTS)
 	include(CTest)
