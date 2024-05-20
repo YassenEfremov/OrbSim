@@ -22,6 +22,7 @@ add_library(liborbsim
 	integrators/verlet.cpp
 	integrators/rk4.cpp
 	math_obj.cpp
+	satellite.cpp
 )
 
 # if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND ORBSIM_BUILD_TESTS)
@@ -32,6 +33,7 @@ add_library(liborbsim
 
 target_include_directories(liborbsim
 	PRIVATE
+		${PROJECT_SOURCE_DIR}/src/simulation
 		${PROJECT_SOURCE_DIR}/src
 		${PROJECT_BINARY_DIR}
 )

@@ -16,14 +16,16 @@
 # configure_file(cmake/version.hpp.in version.hpp)
 # configure_file(cmake/install_prefix.hpp.in install_prefix.hpp)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
-qt_standard_project_setup()
+# find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+# qt_standard_project_setup()
 
-qt_add_executable(orbsim
-	main.cpp
-	main_window.cpp
-	main_window.ui
-)
+# qt_add_executable(orbsim
+# 	main.cpp
+# 	main_window.cpp
+# 	main_window.ui
+# )
+
+add_executable(orbsimcli main.cpp)
 
 # if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND ORBSIM_BUILD_TESTS)
 # 	include(CTest)
@@ -31,29 +33,23 @@ qt_add_executable(orbsim
 #     add_subdirectory(test)
 # endif()
 
-target_include_directories(orbsim
+target_include_directories(orbsimcli
 	PRIVATE
-		${PROJECT_SOURCE_DIR}/src/gui
 		${PROJECT_SOURCE_DIR}/src
 		${PROJECT_BINARY_DIR}
 )
 
-target_link_libraries(orbsim
+target_link_libraries(orbsimcli
 	PRIVATE
 		liborbsim
-		Qt6::Core
-		Qt6::Gui
-		Qt6::Widgets
-)
-
-set_target_properties(orbsim PROPERTIES
-    WIN32_EXECUTABLE ON
-    MACOSX_BUNDLE ON
+		# Qt6::Core
+		# Qt6::Gui
+		# Qt6::Widgets
 )
 
 
 install(
-	TARGETS orbsim
+	TARGETS orbsimcli
 	DESTINATION bin
 )
 

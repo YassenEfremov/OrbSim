@@ -1,6 +1,6 @@
 #include "rk4.hpp"
-#include "simulation/integrators/integrator.hpp"
-#include "simulation/math_obj.hpp"
+#include "integrator.hpp"
+#include "math_obj.hpp"
 
 #include <cmath>
 #include <fstream>
@@ -12,6 +12,8 @@ namespace orbsim {
 RK4::RK4(double M, double R0, Vec3 x0, Vec3 v0,
 			   double t_i, double t_f, int steps)
 	: Integrator(M, R0, x0, v0, t_i, t_f, steps) {}
+
+RK4 *RK4::copy() const { return new RK4(*this); }
 
 void RK4::integrate() {
 

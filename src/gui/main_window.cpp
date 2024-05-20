@@ -5,13 +5,15 @@
 #include "simulation/integrators/verlet.hpp"	
 #include "simulation/integrators/rk4.hpp"	
 #include "simulation/math_obj.hpp"
+#include "simulation/satellite.hpp"
 
+#include <QComboBox>
+#include <QDoubleSpinBox>
 #include <QMainWindow>
-#include <QWidget>
 #include <QPushButton>
-
-#include <functional>
-#include <map>
+#include <QSpinBox>
+#include <QString>
+#include <QWidget>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -19,10 +21,25 @@ MainWindow::MainWindow(QWidget *parent)
 
 	ui->setupUi(this);
 
+	connect(ui->ChooseInitCond, &QComboBox::currentIndexChanged,
+			this, &MainWindow::update_init_cond);
+
+	connect(ui->StartTimeSpinBox, &QSpinBox::valueChanged,
+			this, [this](int t_start) { this->sat.set_t_start(t_start); });
+
+	connect(ui->EndTimeSpinBox, &QSpinBox::valueChanged,
+			this, [this](int t_end) { this->sat.set_t_end(t_end); });
+
+	connect(ui->TimeStepsSpinBox, &QSpinBox::valueChanged,
+			this, [this](int t_steps) { this->sat.set_t_steps(t_steps); });
+
+	connect(ui->ChooseIntegrator, &QComboBox::currentTextChanged,
+			this, [this](QString integ_name) { this->sat.set_integ(integ_name.toStdString()); });
+
 	connect(ui->SimulateButton, &QPushButton::clicked,
 			this, &MainWindow::simulate);
-	connect(ui->ExampleValuesButton, &QPushButton::clicked,
-			this, &MainWindow::load_example_values);
+
+	load_example_values();
 }
 
 MainWindow::~MainWindow() {
@@ -31,66 +48,102 @@ MainWindow::~MainWindow() {
 
 void MainWindow::simulate() {
 
-	// Initial conditions
-
-	double M = 5.972e24;	// Earth Mass in [kg]
-	double R0 = 6378.137;	// Earth Radius in [km]
-
-	orbsim::Vec3 x0{
-		ui->PosSpinBoxX->value(),
-		ui->PosSpinBoxY->value(),
-		ui->PosSpinBoxZ->value()
-	};
-	orbsim::Vec3 v0{
-		ui->VelSpinBoxX->value(),
-		ui->VelSpinBoxY->value(),
-		ui->VelSpinBoxZ->value()
-	};
-
-	double t_i = ui->StartTimeSpinBox->value();
-	double t_f = ui->FinishTimeSpinBox->value();
-
-	std::map<QString, std::function<orbsim::Integrator *()>> str_integ {
-		{"Euler", [=]() { return new orbsim::Euler(M, R0, x0, v0, t_i, t_f, t_f/10); }},
-		{"Verlet", [=]() { return new orbsim::Verlet(M, R0, x0, v0, t_i, t_f, t_f/10); }},
-		{"RK4", [=]() { return new orbsim::RK4(M, R0, x0, v0, t_i, t_f, t_f/10); }}
-	};
-
-	orbsim::Integrator *integ = str_integ[ui->ChooseIntegrator->currentText()]();
-	integ->integrate();
-
-	QString output;
-	for (int i = 0; i < integ->get_steps() - 1; i++) {
-		output += integ->get_pos_arr()[i].to_str() + " " + integ->get_vel_arr()[i].to_str() + "\n";
+	// this is a bit dumb, but we could fix it in the future
+	switch (ui->ChooseInitCond->currentIndex()) {
+	case 0:
+		this->sat.set_cart_elem(orbsim::CartElem{
+			orbsim::Vec3{
+				ui->PosSpinBoxX->value(),
+				ui->PosSpinBoxY->value(),
+				ui->PosSpinBoxZ->value()
+			},
+			orbsim::Vec3{
+				ui->VelSpinBoxX->value(),
+				ui->VelSpinBoxY->value(),
+				ui->VelSpinBoxZ->value()
+			}
+		});
+		break;
+	case 1:
+		this->sat.set_kepl_elem(orbsim::KeplElem{
+			ui->EccSpinBox->value(),
+			ui->SemMajAxSpinBox->value(),
+			ui->IncSpinBox->value(),
+			ui->RiAscNodeSpinBox->value(),
+			ui->ArgOfPerSpinBox->value(),
+			ui->TrueAnomSpinBox->value()
+		});
+		break;
 	}
 
-	delete integ;
+	orbsim::SimData sim_data = this->sat.propagate();
+
+	QString output;
+	for (int i = 0; i < sim_data.steps - 1; i++) {
+		output += sim_data.pos_arr[i].to_str() + " " + sim_data.vel_arr[i].to_str() + "\n";
+	}
 
 	ui->OutputConsole->setText(output);
 }
 
 void MainWindow::load_example_values() {
 
-	// Example initial conditions
+	this->sat = orbsim::Satellite();
 
-	double M = 5.972e24;	// Earth Mass in [kg]
-	double R0 = 6378.137;	// Earth Radius in [km]
+	sync_cart_gui();
+	sync_kepl_gui();
+	ui->StartTimeSpinBox->setValue(this->sat.get_t_start());
+	ui->EndTimeSpinBox->setValue(this->sat.get_t_end());
+	ui->TimeStepsSpinBox->setValue(this->sat.get_t_steps());
+	ui->ChooseIntegrator->setCurrentText(this->sat.get_integ_name().c_str());
+}
 
-	orbsim::Vec3 x0{7000, 0.000001, -0.001608};
-	orbsim::Vec3 v0{0.000002, 1.310359, 7.431412};
+void MainWindow::update_init_cond(int init_cond_index) {
+	switch (init_cond_index) {
+	case 0:
+		this->sat.set_kepl_elem(orbsim::KeplElem{
+			ui->EccSpinBox->value(),
+			ui->SemMajAxSpinBox->value(),
+			ui->IncSpinBox->value(),
+			ui->RiAscNodeSpinBox->value(),
+			ui->ArgOfPerSpinBox->value(),
+			ui->TrueAnomSpinBox->value()
+		});
+		sync_cart_gui();
+		break;
+	case 1:
+		this->sat.set_cart_elem(orbsim::CartElem{
+			orbsim::Vec3{
+				ui->PosSpinBoxX->value(),
+				ui->PosSpinBoxY->value(),
+				ui->PosSpinBoxZ->value()
+			},
+			orbsim::Vec3{
+				ui->VelSpinBoxX->value(),
+				ui->VelSpinBoxY->value(),
+				ui->VelSpinBoxZ->value()
+			}
+		});
+		sync_kepl_gui();
+		break;
+	}
+}
 
-	double t_i = 0;
-	double t_f = 86400;
+void MainWindow::sync_cart_gui() {
+	ui->PosSpinBoxX->setValue(this->sat.get_cart_elem().pos.x);
+	ui->PosSpinBoxY->setValue(this->sat.get_cart_elem().pos.y);
+	ui->PosSpinBoxZ->setValue(this->sat.get_cart_elem().pos.z);
 
-	ui->PosSpinBoxX->setValue(x0.x);
-	ui->PosSpinBoxY->setValue(x0.y);
-	ui->PosSpinBoxZ->setValue(x0.z);
+	ui->VelSpinBoxX->setValue(this->sat.get_cart_elem().vel.x);
+	ui->VelSpinBoxY->setValue(this->sat.get_cart_elem().vel.y);
+	ui->VelSpinBoxZ->setValue(this->sat.get_cart_elem().vel.z);
+}
 
-	ui->VelSpinBoxX->setValue(v0.x);
-	ui->VelSpinBoxY->setValue(v0.y);
-	ui->VelSpinBoxZ->setValue(v0.z);
-
-	ui->StartTimeSpinBox->setValue(t_i);
-	ui->FinishTimeSpinBox->setValue(t_f);
-	ui->TimeStepSpinBox->setValue(t_f/10);
+void MainWindow::sync_kepl_gui() {
+	ui->EccSpinBox->setValue(this->sat.get_kepl_elem().ecc);
+	ui->SemMajAxSpinBox->setValue(this->sat.get_kepl_elem().sem_maj_ax);
+	ui->IncSpinBox->setValue(this->sat.get_kepl_elem().inc);
+	ui->RiAscNodeSpinBox->setValue(this->sat.get_kepl_elem().ri_asc_node);
+	ui->ArgOfPerSpinBox->setValue(this->sat.get_kepl_elem().arg_of_per);
+	ui->TrueAnomSpinBox->setValue(this->sat.get_kepl_elem().true_anom);
 }
