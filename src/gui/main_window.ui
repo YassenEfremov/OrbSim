@@ -207,10 +207,10 @@
                  <number>8</number>
                 </property>
                 <property name="minimum">
-                 <double>-300000.000000000000000</double>
+                 <double>0.000000000000000</double>
                 </property>
                 <property name="maximum">
-                 <double>300000.000000000000000</double>
+                 <double>1.000000000000000</double>
                 </property>
                </widget>
               </item>
@@ -362,11 +362,11 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="FinishTimeLayout">
+         <layout class="QHBoxLayout" name="EndTimeLayout">
           <item>
-           <widget class="QLabel" name="FinishTimeLabel">
+           <widget class="QLabel" name="EndTimeLabel">
             <property name="text">
-             <string>Finish time:</string>
+             <string>End time:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -374,7 +374,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="FinishTimeSpinBox">
+           <widget class="QSpinBox" name="EndTimeSpinBox">
             <property name="maximum">
              <number>100000</number>
             </property>
@@ -383,11 +383,11 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="TimeStepLayout">
+         <layout class="QHBoxLayout" name="TimeStepsLayout">
           <item>
-           <widget class="QLabel" name="TimeStepLabel">
+           <widget class="QLabel" name="TimeStepsLabel">
             <property name="text">
-             <string>Time step</string>
+             <string>Time steps:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -395,20 +395,13 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="TimeStepSpinBox">
+           <widget class="QSpinBox" name="TimeStepsSpinBox">
             <property name="maximum">
              <number>100000</number>
             </property>
            </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QPushButton" name="ExampleValuesButton">
-          <property name="text">
-           <string>Load example values</string>
-          </property>
-         </widget>
         </item>
         <item>
          <spacer name="verticalSpacer">

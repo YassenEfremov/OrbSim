@@ -33,6 +33,7 @@ add_library(liborbsim
 
 target_include_directories(liborbsim
 	PRIVATE
+		${PROJECT_SOURCE_DIR}/src/simulation
 		${PROJECT_SOURCE_DIR}/src
 		${PROJECT_BINARY_DIR}
 )

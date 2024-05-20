@@ -33,6 +33,7 @@ qt_add_executable(orbsim
 
 target_include_directories(orbsim
 	PRIVATE
+		${PROJECT_SOURCE_DIR}/src/gui
 		${PROJECT_SOURCE_DIR}/src
 		${PROJECT_BINARY_DIR}
 )

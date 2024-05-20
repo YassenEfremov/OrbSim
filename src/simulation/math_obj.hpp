@@ -7,11 +7,6 @@
 namespace orbsim {
 
 const double G = 6.67430e-11;
-
-const double M_Sun = 1.989e30;		// Sun Mass in [kg]
-const double M_Earth = 5.972e24;	// Earth Mass in [kg]
-const double R_Earth = 6378.137;	// Earth Radius in [km]
-
 const double PI = 3.14159265358979323846;
 
 struct Vec3 {
@@ -35,6 +30,22 @@ struct Vec3 {
 
 Vec3 operator*(double scalar, const Vec3 &v);
 Vec3 operator*(const Vec3 &v, double scalar);
+
+struct CartElem {
+	// Cartesian state vectors
+	Vec3 pos;	// [km]
+	Vec3 vel;	// [km/s]
+};
+
+struct KeplElem {
+	// Keplerian orbital elements
+	double ecc;			// [1]
+	double sem_maj_ax;	// [km]
+	double inc;			// [rad]
+	double ri_asc_node;	// [rad]
+	double arg_of_per;	// [rad]
+	double true_anom;	// [rad]
+};
 
 } // namespace orbsim
 

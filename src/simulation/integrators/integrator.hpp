@@ -14,6 +14,10 @@ class Integrator {
 public:
 	Integrator(double M, double R0, Vec3 x0, Vec3 v0,
 			   double t_i, double t_f, int steps);
+	Integrator(const Integrator &other);
+	Integrator &operator=(const Integrator &other);
+
+	virtual Integrator *copy() const = 0;
 
 	~Integrator();
 
@@ -23,6 +27,9 @@ public:
 	double *get_time_arr() const;
 	Vec3 *get_pos_arr() const;
 	Vec3 *get_vel_arr() const;
+
+	void set_delta_t(int t_start, int t_end);
+	void set_steps(int steps);
 
 	void save_to_file(const char *filename) const;
 

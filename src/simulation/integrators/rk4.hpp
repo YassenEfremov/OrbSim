@@ -16,6 +16,8 @@ public:
 	RK4(double M, double R0, Vec3 x0, Vec3 v0,
 		double t_i, double t_f, int steps);
 
+	RK4 *copy() const override;
+
 	void integrate() override;
 };
 
