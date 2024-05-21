@@ -16,18 +16,26 @@ Euler::Euler(double M, double R0, Vec3 x0, Vec3 v0,
 Euler *Euler::copy() const { return new Euler(*this); }
 
 void Euler::integrate() {
+	// Norm the initial conditions
+	// this->time_arr = linspace?
+	this->delta_t /= this->T_dim;
+	this->pos_arr[0] /= this->R_dim;
+	this->vel_arr[0] /= this->V_dim;
+
 	for (int i = 0; i < steps - 1; i++) {
 		this->pos_arr[i + 1] = this->pos_arr[i] + (this->vel_arr[i]) * delta_t;
-		this->vel_arr[i + 1] = this->vel_arr[i] + (- (M * G * this->pos_arr[i]) / (std::pow(this->pos_arr[i].len(), 3))) * delta_t;
+		this->vel_arr[i + 1] = this->vel_arr[i] + (- this->pos_arr[i] / (std::pow(this->pos_arr[i].len(), 3))) * delta_t;
 
 		// Convert back to kilometers
-		this->pos_arr[i] /= 1000;
-		this->vel_arr[i] /= 1000;
+		this->pos_arr[i] *= this->R_dim;
+		this->vel_arr[i] *= this->V_dim;
 	}
 
 	// Don't forget the last one
-	this->pos_arr[this->steps - 1] /= 1000;
-	this->vel_arr[this->steps - 1] /= 1000;
+	this->pos_arr[this->steps - 1] *= this->R_dim;
+	this->vel_arr[this->steps - 1] *= this->V_dim;
+
+	this->delta_t *= T_dim;
 }
 
 } // namespace orbsim

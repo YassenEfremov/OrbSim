@@ -17,10 +17,14 @@ Integrator::Integrator(double M, double R0, Vec3 x0, Vec3 v0,
 	this->delta_t = (t_f - t_i) / (steps - 1);
 	this->M = M;
 	this->R0 = R0;
-	// Convert to meters
-	this->pos_arr[0] = x0 * 1000;
-	this->vel_arr[0] = v0 * 1000;
+	// this->time_arr = ?
+	this->pos_arr[0] = x0;
+	this->vel_arr[0] = v0;
 
+	// Norming constants for dimensionless units
+	this->R_dim = this->R0;	// [km]
+	this->V_dim = std::sqrt((this->M * G)/(1000*this->R0))/1000;	// [km/sec]
+	this->T_dim = R_dim / V_dim;	// [sec]
 }
 
 Integrator::Integrator(const Integrator &other)

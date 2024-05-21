@@ -15,7 +15,6 @@ class Euler : public Integrator {
 public:
 	Euler(double M, double R0, Vec3 x0, Vec3 v0,
 		  double t_i, double t_f, int steps);
-	// Euler(const Euler &other);
 
 	Euler *copy() const override;
 

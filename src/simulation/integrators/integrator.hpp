@@ -40,8 +40,11 @@ protected:
 	double delta_t;
 	double *time_arr;
 	Vec3 *pos_arr;	// [km]
-	Vec3 *vel_arr;	// [km]
+	Vec3 *vel_arr;	// [km/s]
 
+	double R_dim;
+	double V_dim;
+	double T_dim;
 };
 
 } // namespace orbsim
