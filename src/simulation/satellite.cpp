@@ -89,11 +89,15 @@ std::string Satellite::get_integ_name() const { return this->integ_name; }
 void Satellite::set_cart_elem(CartElem new_cart_elem) {
 	this->cart_elem = new_cart_elem;
 	calc_kepl();
+	this->integ->set_x0(this->cart_elem.pos);
+	this->integ->set_v0(this->cart_elem.vel);
 }
 
 void Satellite::set_kepl_elem(KeplElem new_kepl_elem) {
 	this->kepl_elem = new_kepl_elem;
 	calc_cart();
+	this->integ->set_x0(this->cart_elem.pos);
+	this->integ->set_v0(this->cart_elem.vel);
 }
 
 void Satellite::set_t_start(int t_start) {

@@ -28,6 +28,8 @@ public:
 	Vec3 *get_pos_arr() const;
 	Vec3 *get_vel_arr() const;
 
+	void set_x0(Vec3 x0);
+	void set_v0(Vec3 v0);
 	void set_delta_t(int t_start, int t_end);
 	void set_steps(int steps);
 

@@ -67,6 +67,14 @@ double *Integrator::get_time_arr() const { return this->time_arr; }
 Vec3 *Integrator::get_pos_arr() const { return this->pos_arr; }
 Vec3 *Integrator::get_vel_arr() const { return this->vel_arr; }
 
+void Integrator::set_x0(Vec3 x0) {
+	this->pos_arr[0] = x0;
+}
+
+void Integrator::set_v0(Vec3 v0) {
+	this->vel_arr[0] = v0;
+}
+
 void Integrator::set_delta_t(int t_start, int t_end) {
 	this->delta_t = (t_end - t_start) / (this->steps - 1);
 }
