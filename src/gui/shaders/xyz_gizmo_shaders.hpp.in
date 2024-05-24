@@ -1,0 +1,13 @@
+/**
+ * This file must be configured by CMake and shouldn't be used directly!
+ * Use the generated version that DOES NOT end in ".in"
+ */
+
+#ifndef XYZ_GIZMO_SHADERS_HPP
+#define XYZ_GIZMO_SHADERS_HPP
+
+const char *xyz_gizmo_vert_src = R"(@XYZ_GIZMO_VERT_SHADER@)";
+
+const char *xyz_gizmo_frag_src = R"(@XYZ_GIZMO_FRAG_SHADER@)";
+
+#endif	// XYZ_GIZMO_SHADERS_HPP

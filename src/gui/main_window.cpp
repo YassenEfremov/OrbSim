@@ -1,5 +1,6 @@
 #include "main_window.hpp"
 #include "ui_main_window.h"
+#include "output_window.hpp"
 
 #include "simulation/integrators/euler.hpp"	
 #include "simulation/integrators/verlet.hpp"	
@@ -84,6 +85,7 @@ void MainWindow::simulate() {
 	}
 
 	ui->OutputConsole->setText(output);
+	emit new_data(sim_data);
 }
 
 void MainWindow::load_example_values() {

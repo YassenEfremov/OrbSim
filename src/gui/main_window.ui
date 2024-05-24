@@ -459,7 +459,7 @@
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="OutputLayout">
+       <layout class="QVBoxLayout" name="OutputLayout" stretch="1,2,1">
         <item>
          <widget class="QLabel" name="OutputLabel">
           <property name="sizePolicy">
@@ -472,6 +472,9 @@
            <string>Output values</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <widget class="OutputWindow" name="outputWindow"/>
         </item>
         <item>
          <widget class="QTextBrowser" name="OutputConsole">
@@ -535,6 +538,13 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OutputWindow</class>
+   <extends>QOpenGLWidget</extends>
+   <header>output_window.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
