@@ -1,0 +1,13 @@
+/**
+ * This file must be configured by CMake and shouldn't be used directly!
+ * Use the generated version that DOES NOT end in ".in"
+ */
+
+#ifndef ORBIT_SHADERS_HPP
+#define ORBIT_SHADERS_HPP
+
+const char *orbit_vert_src = R"(@ORBIT_VERT_SHADER@)";
+
+const char *orbit_frag_src = R"(@ORBIT_FRAG_SHADER@)";
+
+#endif	// ORBIT_SHADERS_HPP
