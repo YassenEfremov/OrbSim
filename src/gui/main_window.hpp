@@ -32,7 +32,7 @@ public:
 	void sync_kepl_gui();
 
 signals:
-	void new_data(orbsim::SimData new_data);
+	void new_sim_data(orbsim::SimData new_data);
 
 private:
 	Ui::MainWindow *ui;

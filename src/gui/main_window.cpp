@@ -39,6 +39,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 	connect(ui->SimulateButton, &QPushButton::clicked,
 			this, &MainWindow::simulate);
+	
+	connect(this, &MainWindow::new_sim_data,
+			findChild<OutputWindow *>("outputWindow"), &OutputWindow::update_sim_data);
 
 	load_example_values();
 }
@@ -85,7 +88,7 @@ void MainWindow::simulate() {
 	}
 
 	ui->OutputConsole->setText(output);
-	emit new_data(sim_data);
+	emit new_sim_data(sim_data);
 }
 
 void MainWindow::load_example_values() {

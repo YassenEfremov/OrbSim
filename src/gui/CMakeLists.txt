@@ -26,10 +26,12 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets OpenGLWidgets)
 qt_standard_project_setup()
 
 qt_add_executable(orbsim
-	main.cpp
+	xyz_gizmo.cpp
+	orbit.cpp
 	main_window.cpp
-	output_window.cpp
 	main_window.ui
+	output_window.cpp
+	main.cpp
 )
 
 # if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND ORBSIM_BUILD_TESTS)
