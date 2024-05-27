@@ -6,23 +6,30 @@ add_subdirectory(${orbsim_SOURCE_DIR}/lib/googletest ${orbsim_BINARY_DIR}/lib/go
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-include_directories(
-	${orbsim_SOURCE_DIR}/src
-	# ${orbsim_SOURCE_DIR}/lib/json/include
-	# ${orbsim_SOURCE_DIR}/lib/spdlog/include
-	${orbsim_BINARY_DIR}
+
+add_executable(test_orbsimlib
+	test_vec3.cpp
+	# test_satellite.cpp
 )
 
-add_executable(test_example test_example.cpp)
+target_include_directories(test_orbsimlib
+	PRIVATE
+		${orbsim_SOURCE_DIR}/src
+		# ${orbsim_SOURCE_DIR}/lib/json/include
+		# ${orbsim_SOURCE_DIR}/lib/spdlog/include
+		${orbsim_BINARY_DIR}
+)
 
-target_link_libraries(test_example
-	GTest::gtest_main
-	# nlohmann_json::nlohmann_json
-	# spdlog::spdlog
+target_link_libraries(test_orbsimlib
+	PRIVATE
+		liborbsim
+		GTest::gtest_main
+		# nlohmann_json::nlohmann_json
+		# spdlog::spdlog
 )
 
 include(GoogleTest)
-gtest_discover_tests(test_example)
+gtest_discover_tests(test_orbsimlib)
 
 
 # For reference
