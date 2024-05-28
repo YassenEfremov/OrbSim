@@ -11,10 +11,14 @@
 #include <QComboBox>
 #include <QDoubleSpinBox>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QString>
 #include <QWidget>
+
+#include <exception>
+#include <stdexcept>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -26,10 +30,26 @@ MainWindow::MainWindow(QWidget *parent)
 			this, &MainWindow::update_init_cond);
 
 	connect(ui->StartTimeSpinBox, &QSpinBox::valueChanged,
-			this, [this](int t_start) { this->sat.set_t_start(t_start); });
+			this, [this](int t_start) {
+				try {
+					this->sat.set_t_start(t_start);
+				} catch (const std::exception &e) {
+					QMessageBox err_msg;
+					err_msg.setText(e.what());
+					err_msg.exec();
+				}
+			});
 
 	connect(ui->EndTimeSpinBox, &QSpinBox::valueChanged,
-			this, [this](int t_end) { this->sat.set_t_end(t_end); });
+			this, [this](int t_end) {
+				try {
+					this->sat.set_t_end(t_end);
+				} catch (const std::exception &e) {
+					QMessageBox err_msg;
+					err_msg.setText(e.what());
+					err_msg.exec();
+				}
+			});
 
 	connect(ui->TimeStepsSpinBox, &QSpinBox::valueChanged,
 			this, [this](int t_steps) { this->sat.set_t_steps(t_steps); });
