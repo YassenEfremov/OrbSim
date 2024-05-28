@@ -210,7 +210,10 @@
                  <double>0.000000000000000</double>
                 </property>
                 <property name="maximum">
-                 <double>1.000000000000000</double>
+                 <double>0.999999000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.100000000000000</double>
                 </property>
                </widget>
               </item>
@@ -354,6 +357,12 @@
           </item>
           <item>
            <widget class="QSpinBox" name="StartTimeSpinBox">
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
             <property name="maximum">
              <number>100000</number>
             </property>
@@ -375,6 +384,9 @@
           </item>
           <item>
            <widget class="QSpinBox" name="EndTimeSpinBox">
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
             <property name="maximum">
              <number>100000</number>
             </property>
@@ -396,6 +408,9 @@
           </item>
           <item>
            <widget class="QSpinBox" name="TimeStepsSpinBox">
+            <property name="keyboardTracking">
+             <bool>false</bool>
+            </property>
             <property name="maximum">
              <number>100000</number>
             </property>

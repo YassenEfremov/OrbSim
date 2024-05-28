@@ -13,6 +13,8 @@
 #include <iostream>
 #include <iomanip>
 #include <map>
+#include <set>
+#include <stdexcept>
 #include <string>
 #include <utility>
 
@@ -94,6 +96,9 @@ void Satellite::set_cart_elem(CartElem new_cart_elem) {
 }
 
 void Satellite::set_kepl_elem(KeplElem new_kepl_elem) {
+	if (new_kepl_elem.ecc < 0 || new_kepl_elem.ecc >= 1) {
+		throw std::domain_error("Eccentricity must be number between 0 and 1");
+	}
 	this->kepl_elem = new_kepl_elem;
 	calc_cart();
 	this->integ->set_x0(this->cart_elem.pos);
@@ -101,23 +106,41 @@ void Satellite::set_kepl_elem(KeplElem new_kepl_elem) {
 }
 
 void Satellite::set_t_start(int t_start) {
+	if (t_start < 0) {
+		throw std::domain_error("Start time must be a positive integer!");
+	}
+	if (t_start >= t_end) {
+		throw std::domain_error("Start time must be smaller than end time!");
+	}
 	this->t_start = t_start;
 	this->integ->set_delta_t(t_start, this->t_end);
 }
 
 void Satellite::set_t_end(int t_end) {
+	if (t_end <= 0) {
+		throw std::domain_error("End time must be a positive integer!");
+	}
+	if (t_end <= t_start) {
+		throw std::domain_error("End time must be larger than start time!");
+	}
 	this->t_end = t_end;
 	this->integ->set_delta_t(this->t_start, t_end);
 }
 
 void Satellite::set_t_steps(int t_steps) {
-	if (t_steps > 0) {
-		this->t_steps = t_steps;
+	if (t_steps <= 0) {
+		throw std::domain_error("Steps must be a positive integer!");
 	}
+	this->t_steps = t_steps;
 	this->integ->set_steps(t_steps);
 }
 
 void Satellite::set_integ(std::string integ_name) {
+	std::set valid_integ {"Euler", "Verlet", "RK4"};
+	if (valid_integ.find(integ_name.c_str()) != valid_integ.end()) {
+		throw std::domain_error("Invalid integrator! Should be one of: Euler, Verlet and RK4");
+	}
+
 	this->integ_name = integ_name;
 
 	std::map<std::string, std::function<orbsim::Integrator *()>> str_integ {

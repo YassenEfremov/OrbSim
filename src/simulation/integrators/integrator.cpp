@@ -4,6 +4,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 
 
 namespace orbsim {
@@ -76,10 +77,22 @@ void Integrator::set_v0(Vec3 v0) {
 }
 
 void Integrator::set_delta_t(int t_start, int t_end) {
+	if (t_start < 0) {
+		throw std::domain_error("Start time must be a positive integer!");
+	}
+	if (t_start >= t_end) {
+		throw std::domain_error("Start time must be smaller than end time!");
+	}
+	if (t_end <= t_start) {
+		throw std::domain_error("End time must be larger than start time!");
+	}
 	this->delta_t = (t_end - t_start) / (this->steps - 1);
 }
 
 void Integrator::set_steps(int steps) {
+	if (steps <= 0) {
+		throw std::domain_error("Steps must be a positive integer!");
+	}
 	this->steps = steps;
 }
 
