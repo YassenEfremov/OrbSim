@@ -6,6 +6,7 @@
 #include "simulation/math_obj.hpp"
 
 #include <string>
+// #include <vector>
 
 
 namespace orbsim {
@@ -15,6 +16,10 @@ struct SimData {
 	double *time_arr;
 	Vec3 *pos_arr;	// [km]
 	Vec3 *vel_arr;	// [km]
+
+	// maybe better?
+	// std::vector<Vec3> pos_arr;	// [km]
+	// std::vector<Vec3> vel_arr;	// [km]
 };
 
 /**
@@ -26,10 +31,10 @@ public:
 	Satellite(CartElem cart_elem = {Vec3{7000, 0.000001, -0.001608},
 									Vec3{0.000002, 1.310359, 7.431412}},
 			  std::string integ_name = "RK4", CelestialObj cel_obj = Earth,
-			  double t_start = 0, double t_end = 86400, double t_steps = 8640);
+			  double t_start = 0, double t_end = 86400, int t_steps = 8640);
 	Satellite(KeplElem kepl_elem,
 			  std::string integ_name, CelestialObj cel_obj,
-			  double t_start, double t_end, double t_steps);
+			  double t_start, double t_end, int t_steps);
 	Satellite(const Satellite &other);
 	Satellite &operator=(const Satellite &other);
 

@@ -1,5 +1,6 @@
 #include "satellite.hpp"
 
+#include "integrators/integrator_factory.hpp"
 #include "integrators/euler.hpp"
 #include "integrators/verlet.hpp"
 #include "integrators/rk4.hpp"
@@ -23,7 +24,7 @@ namespace orbsim {
 
 Satellite::Satellite(CartElem cart_elem,
 					 std::string integ_name, CelestialObj cel_obj,
-					 double t_start, double t_end, double t_steps)
+					 double t_start, double t_end, int t_steps)
 	: cart_elem(cart_elem), integ_name(integ_name), cel_obj(cel_obj),
 	  t_start(t_start), t_end(t_end), t_steps(t_steps) {
 
@@ -34,18 +35,13 @@ Satellite::Satellite(CartElem cart_elem,
 
 	calc_kepl();
 
-	std::map<std::string, std::function<orbsim::Integrator *()>> str_integ {
-		{"Euler", [=]() { return new orbsim::Euler(cel_obj.mass, cel_obj.radius, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps); }},
-		{"Verlet", [=]() { return new orbsim::Verlet(cel_obj.mass, cel_obj.radius, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps); }},
-		{"RK4", [=]() { return new orbsim::RK4(cel_obj.mass, cel_obj.radius, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps); }}
-	};
-
-	this->integ = str_integ[integ_name]();
+	IntegratorFactory integ_fact(cel_obj, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps);
+	this->integ = integ_fact.create(integ_name);
 }
 
 Satellite::Satellite(KeplElem kepl_elem,
 					 std::string integ_name, CelestialObj cel_obj,
-					 double t_start, double t_end, double t_steps)
+					 double t_start, double t_end, int t_steps)
 	: kepl_elem(kepl_elem), integ_name(integ_name), cel_obj(cel_obj),
 	  t_start(t_start), t_end(t_end), t_steps(t_steps) {
 
@@ -59,13 +55,8 @@ Satellite::Satellite(KeplElem kepl_elem,
 
 	calc_cart();
 
-	std::map<std::string, std::function<orbsim::Integrator *()>> str_integ {
-		{"Euler", [=]() { return new orbsim::Euler(cel_obj.mass, cel_obj.radius, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps); }},
-		{"Verlet", [=]() { return new orbsim::Verlet(cel_obj.mass, cel_obj.radius, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps); }},
-		{"RK4", [=]() { return new orbsim::RK4(cel_obj.mass, cel_obj.radius, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps); }}
-	};
-
-	this->integ = str_integ[integ_name]();
+	IntegratorFactory integ_fact(cel_obj, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps);
+	this->integ = integ_fact.create(integ_name);
 }
 
 Satellite::Satellite(const Satellite &other)
@@ -156,14 +147,9 @@ void Satellite::set_integ(std::string integ_name) {
 
 	this->integ_name = integ_name;
 
-	std::map<std::string, std::function<orbsim::Integrator *()>> str_integ {
-		{"Euler", [=]() { return new orbsim::Euler(cel_obj.mass, cel_obj.radius, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps); }},
-		{"Verlet", [=]() { return new orbsim::Verlet(cel_obj.mass, cel_obj.radius, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps); }},
-		{"RK4", [=]() { return new orbsim::RK4(cel_obj.mass, cel_obj.radius, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps); }}
-	};
-
 	delete this->integ;
-	this->integ = str_integ[integ_name]();
+	IntegratorFactory integ_fact(cel_obj, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps);
+	this->integ = integ_fact.create(integ_name);
 }
 
 SimData Satellite::propagate() {

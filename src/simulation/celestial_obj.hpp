@@ -22,4 +22,3 @@ const CelestialObj Earth{
 
 
 #endif	// CELESTIAL_OBJ_HPP
-

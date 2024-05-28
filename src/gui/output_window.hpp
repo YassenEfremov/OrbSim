@@ -34,4 +34,5 @@ private:
     Orbit orbit;
 };
 
+
 #endif	// OUTPUT_WINDOW_HPP

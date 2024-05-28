@@ -27,4 +27,5 @@ private:
 	QOpenGLShaderProgram *shader_program;
 };
 
+
 #endif	// XYZ_GIZMO_HPP

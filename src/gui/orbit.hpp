@@ -31,4 +31,5 @@ private:
 	QOpenGLShaderProgram *shader_program;
 };
 
+
 #endif	// ORBIT_HPP
