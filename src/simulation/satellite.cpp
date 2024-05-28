@@ -27,6 +27,11 @@ Satellite::Satellite(CartElem cart_elem,
 	: cart_elem(cart_elem), integ_name(integ_name), cel_obj(cel_obj),
 	  t_start(t_start), t_end(t_end), t_steps(t_steps) {
 
+	std::set valid_integ {"Euler", "Verlet", "RK4"};
+	if (valid_integ.find(integ_name.c_str()) != valid_integ.end()) {
+		throw std::domain_error("Invalid integrator! Should be one of: Euler, Verlet and RK4");
+	}
+
 	calc_kepl();
 
 	std::map<std::string, std::function<orbsim::Integrator *()>> str_integ {
@@ -43,6 +48,14 @@ Satellite::Satellite(KeplElem kepl_elem,
 					 double t_start, double t_end, double t_steps)
 	: kepl_elem(kepl_elem), integ_name(integ_name), cel_obj(cel_obj),
 	  t_start(t_start), t_end(t_end), t_steps(t_steps) {
+
+	if (kepl_elem.ecc < 0 || kepl_elem.ecc >= 1) {
+		throw std::domain_error("Eccentricity must be a number between 0 and 1");
+	}
+	std::set valid_integ {"Euler", "Verlet", "RK4"};
+	if (valid_integ.find(integ_name.c_str()) != valid_integ.end()) {
+		throw std::domain_error("Invalid integrator! Should be one of: Euler, Verlet and RK4");
+	}
 
 	calc_cart();
 
@@ -97,7 +110,7 @@ void Satellite::set_cart_elem(CartElem new_cart_elem) {
 
 void Satellite::set_kepl_elem(KeplElem new_kepl_elem) {
 	if (new_kepl_elem.ecc < 0 || new_kepl_elem.ecc >= 1) {
-		throw std::domain_error("Eccentricity must be number between 0 and 1");
+		throw std::domain_error("Eccentricity must be a number between 0 and 1");
 	}
 	this->kepl_elem = new_kepl_elem;
 	calc_cart();

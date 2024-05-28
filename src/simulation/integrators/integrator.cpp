@@ -10,9 +10,22 @@
 namespace orbsim {
 
 Integrator::Integrator(double M, double R0, Vec3 x0, Vec3 v0,
-			 double t_i, double t_f, int steps)
+					   double t_i, double t_f, int steps)
 	: time_arr(new double[steps]{}), pos_arr(new Vec3[steps]{}),
 									 vel_arr(new Vec3[steps]{}) {
+	
+	if (t_i < 0) {
+		throw std::domain_error("Start time must be a positive integer!");
+	}
+	if (t_f <= 0) {
+		throw std::domain_error("End time must be a positive integer!");
+	}
+	if (t_i >= t_f) {
+		throw std::domain_error("Start time must be smaller than end time!");
+	}
+	if (steps <= 0) {
+		throw std::domain_error("Steps must be a positive integer!");
+	}
 	
 	this->steps = steps;
 	this->delta_t = (t_f - t_i) / (steps - 1);
