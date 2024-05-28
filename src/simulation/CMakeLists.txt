@@ -18,6 +18,7 @@
 
 add_library(liborbsim
 	integrators/euler.cpp
+	integrators/integrator_factory.cpp
 	integrators/integrator.cpp
 	integrators/verlet.cpp
 	integrators/rk4.cpp
