@@ -40,4 +40,5 @@ private:
 	orbsim::Satellite sat;
 };
 
+
 #endif	// MAIN_WINDOW_HPP

@@ -11,5 +11,5 @@ public:
 	virtual void render() = 0;
 };
 
-#endif	// VIS_OBJ_HPP
 
+#endif	// VIS_OBJ_HPP
