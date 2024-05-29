@@ -8,7 +8,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 
 add_executable(orbsimlib_test
-	# integrator_factory_test.cpp
+	integrator_factory_test.cpp
 	vec3_test.cpp
 	# satellite_test.cpp
 )
