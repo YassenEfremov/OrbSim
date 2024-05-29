@@ -24,7 +24,7 @@ add_subdirectory(src/cli)
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND ORBSIM_BUILD_TESTS)
 	include(CTest)
 	enable_testing()
-    add_subdirectory(test)
+    add_subdirectory(test/simulation)
 endif()
 
 
