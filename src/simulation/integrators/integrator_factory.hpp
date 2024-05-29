@@ -1,9 +1,9 @@
 #ifndef INTEGRATOR_FACTORY_HPP
 #define INTEGRATOR_FACTORY_HPP
 
-#include "celestial_obj.hpp"
-#include "integrator.hpp"
-#include "math_obj.hpp"
+#include "simulation/celestial_obj.hpp"
+#include "simulation/integrators/integrator.hpp"
+#include "simulation/math_obj.hpp"
 
 #include <string>
 

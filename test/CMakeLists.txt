@@ -7,12 +7,13 @@ add_subdirectory(${orbsim_SOURCE_DIR}/lib/googletest ${orbsim_BINARY_DIR}/lib/go
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 
-add_executable(test_orbsimlib
-	test_vec3.cpp
-	# test_satellite.cpp
+add_executable(orbsimlib_test
+	# integrator_factory_test.cpp
+	vec3_test.cpp
+	# satellite_test.cpp
 )
 
-target_include_directories(test_orbsimlib
+target_include_directories(orbsimlib_test
 	PRIVATE
 		${orbsim_SOURCE_DIR}/src
 		# ${orbsim_SOURCE_DIR}/lib/json/include
@@ -20,7 +21,7 @@ target_include_directories(test_orbsimlib
 		${orbsim_BINARY_DIR}
 )
 
-target_link_libraries(test_orbsimlib
+target_link_libraries(orbsimlib_test
 	PRIVATE
 		liborbsim
 		GTest::gtest_main
@@ -29,7 +30,7 @@ target_link_libraries(test_orbsimlib
 )
 
 include(GoogleTest)
-gtest_discover_tests(test_orbsimlib)
+gtest_discover_tests(orbsimlib_test)
 
 
 # For reference

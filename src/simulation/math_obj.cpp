@@ -51,6 +51,22 @@ Vec3 &Vec3::operator/=(double scalar) {
 	return *this *= 1/scalar;
 }
 
+bool Vec3::operator==(const Vec3 &other) const {
+	auto compd = [](double a, double b) -> bool {
+		const double epsilon = 1e-8;
+		return std::fabs(a - b) < epsilon;
+	};
+	
+	return compd(this->x, other.x) &&
+		   compd(this->y, other.y) &&
+		   compd(this->z, other.z);
+}
+
+bool Vec3::operator!=(const Vec3 &other) const {
+	return !(*this == other);
+}
+
+
 double Vec3::len() const {
 	// use that len = sqrt(dot product with itself)
 	return std::sqrt(x*x + y*y + z*z);
