@@ -11,8 +11,9 @@ namespace orbsim {
 
 Integrator::Integrator(double M, double R0, Vec3 x0, Vec3 v0,
 					   double t_i, double t_f, int steps)
-	: time_arr(new double[steps]{}), pos_arr(new Vec3[steps]{}),
-									 vel_arr(new Vec3[steps]{}) {
+	: steps(steps), delta_t((t_f - t_i) / (steps - 1)),
+	  time_arr(new double[steps]{}),
+	  pos_arr(new Vec3[steps]{}), vel_arr(new Vec3[steps]{}) {
 	
 	if (t_i < 0) {
 		throw std::domain_error("Start time must be a positive integer!");
@@ -26,14 +27,12 @@ Integrator::Integrator(double M, double R0, Vec3 x0, Vec3 v0,
 	if (steps <= 0) {
 		throw std::domain_error("Steps must be a positive integer!");
 	}
-	
-	this->steps = steps;
-	this->delta_t = (t_f - t_i) / (steps - 1);
-	this->M = M;
-	this->R0 = R0;
+
 	// this->time_arr = ?
 	this->pos_arr[0] = x0;
 	this->vel_arr[0] = v0;
+	this->M = M;
+	this->R0 = R0;
 
 	// Norming constants for dimensionless units
 	this->R_dim = this->R0;	// [km]
@@ -42,12 +41,10 @@ Integrator::Integrator(double M, double R0, Vec3 x0, Vec3 v0,
 }
 
 Integrator::Integrator(const Integrator &other)
-	: time_arr(new double[other.steps]{}),
-	  pos_arr(new Vec3[other.steps]{}),
-	  vel_arr(new Vec3[other.steps]{}) {
-	
-	this->steps = other.steps;
-	this->delta_t = other.delta_t;
+	: steps(other.steps), delta_t(other.delta_t),
+	  time_arr(new double[other.steps]{}),
+	  pos_arr(new Vec3[other.steps]{}), vel_arr(new Vec3[other.steps]{}) {
+
 	this->M = other.M;
 	this->R0 = other.R0;
 	for (int i = 0; i < other.steps; i++) {
@@ -77,16 +74,16 @@ Integrator::~Integrator() {
 }
 
 int Integrator::get_steps() const { return this->steps; }
+double Integrator::get_delta_t() const { return this->delta_t; }
 double *Integrator::get_time_arr() const { return this->time_arr; }
 Vec3 *Integrator::get_pos_arr() const { return this->pos_arr; }
 Vec3 *Integrator::get_vel_arr() const { return this->vel_arr; }
 
-void Integrator::set_x0(Vec3 x0) {
-	this->pos_arr[0] = x0;
-}
-
-void Integrator::set_v0(Vec3 v0) {
-	this->vel_arr[0] = v0;
+void Integrator::set_steps(int steps) {
+	if (steps <= 0) {
+		throw std::domain_error("Steps must be a positive integer!");
+	}
+	this->steps = steps;
 }
 
 void Integrator::set_delta_t(int t_start, int t_end) {
@@ -102,11 +99,12 @@ void Integrator::set_delta_t(int t_start, int t_end) {
 	this->delta_t = (t_end - t_start) / (this->steps - 1);
 }
 
-void Integrator::set_steps(int steps) {
-	if (steps <= 0) {
-		throw std::domain_error("Steps must be a positive integer!");
-	}
-	this->steps = steps;
+void Integrator::set_x0(Vec3 x0) {
+	this->pos_arr[0] = x0;
+}
+
+void Integrator::set_v0(Vec3 v0) {
+	this->vel_arr[0] = v0;
 }
 
 void Integrator::save_to_file(const char *filename) const

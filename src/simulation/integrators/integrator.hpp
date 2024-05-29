@@ -24,14 +24,15 @@ public:
 	virtual void integrate() = 0;
 
 	int get_steps() const;
+	double get_delta_t() const;
 	double *get_time_arr() const;
 	Vec3 *get_pos_arr() const;
 	Vec3 *get_vel_arr() const;
 
+	void set_steps(int steps);
+	void set_delta_t(int t_start, int t_end);
 	void set_x0(Vec3 x0);
 	void set_v0(Vec3 v0);
-	void set_delta_t(int t_start, int t_end);
-	void set_steps(int steps);
 
 	void save_to_file(const char *filename) const;
 

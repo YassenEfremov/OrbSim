@@ -20,6 +20,8 @@ struct Vec3 {
 	Vec3 &operator*=(double scalar);
 	Vec3 operator/(double scalar) const;
 	Vec3 &operator/=(double scalar);
+	bool operator==(const Vec3 &other) const;
+	bool operator!=(const Vec3 &other) const;
 
 	double len() const;
 	Vec3 norm() const;
