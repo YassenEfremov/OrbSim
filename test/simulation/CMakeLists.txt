@@ -11,7 +11,7 @@ add_executable(orbsimlib_test
 	integrators/integrator_test.cpp
 	integrators/integrator_factory_test.cpp
 	vec3_test.cpp
-	# satellite_test.cpp
+	satellite_test.cpp
 )
 
 target_include_directories(orbsimlib_test
