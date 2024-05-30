@@ -1,0 +1,13 @@
+/**
+ * This file must be configured by CMake and shouldn't be used directly!
+ * Use the generated version that DOES NOT end in ".in"
+ */
+
+#ifndef CENTRAL_BODY_SHADERS_HPP
+#define CENTRAL_BODY_SHADERS_HPP
+
+const char *central_body_vert_src = R"(@CENTRAL_BODY_VERT_SHADER@)";
+
+const char *central_body_frag_src = R"(@CENTRAL_BODY_FRAG_SHADER@)";
+
+#endif	// CENTRAL_BODY_SHADERS_HPP

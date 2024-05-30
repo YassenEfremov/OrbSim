@@ -1,6 +1,7 @@
 #ifndef OUTPUT_WINDOW_HPP
 #define OUTPUT_WINDOW_HPP
 
+#include "central_body.hpp"
 #include "xyz_gizmo.hpp"
 #include "orbit.hpp"
 #include "simulation/satellite.hpp"
@@ -30,6 +31,7 @@ protected:
     void paintGL() override;
 
 private:
+    CentralBody central_body;
     XYZGizmo xyz_gizmo;
     Orbit orbit;
 };

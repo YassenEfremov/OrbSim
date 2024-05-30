@@ -15,10 +15,13 @@
 
 # configure_file(cmake/version.hpp.in version.hpp)
 # configure_file(cmake/install_prefix.hpp.in install_prefix.hpp)
+file(READ shaders/glsl/central_body.vert CENTRAL_BODY_VERT_SHADER)
+file(READ shaders/glsl/central_body.frag CENTRAL_BODY_FRAG_SHADER)
 file(READ shaders/glsl/orbit.vert ORBIT_VERT_SHADER)
 file(READ shaders/glsl/orbit.frag ORBIT_FRAG_SHADER)
 file(READ shaders/glsl/xyz_gizmo.vert XYZ_GIZMO_VERT_SHADER)
 file(READ shaders/glsl/xyz_gizmo.frag XYZ_GIZMO_FRAG_SHADER)
+configure_file(shaders/central_body_shaders.hpp.in shaders/central_body_shaders.hpp)
 configure_file(shaders/orbit_shaders.hpp.in shaders/orbit_shaders.hpp)
 configure_file(shaders/xyz_gizmo_shaders.hpp.in shaders/xyz_gizmo_shaders.hpp)
 
@@ -26,6 +29,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets OpenGLWidgets)
 qt_standard_project_setup()
 
 qt_add_executable(orbsim
+	central_body.cpp
 	xyz_gizmo.cpp
 	orbit.cpp
 	main_window.cpp

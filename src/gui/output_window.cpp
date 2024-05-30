@@ -1,6 +1,7 @@
 #include "output_window.hpp"
 
 #include "main_window.hpp"
+#include "central_body.hpp"
 #include "xyz_gizmo.hpp"
 #include "orbit.hpp"
 #include "simulation/satellite.hpp"
@@ -40,6 +41,7 @@ void OutputWindow::initializeGL() {
 
 	glEnable(GL_DEPTH_TEST);
 
+	this->central_body.create();
 	this->xyz_gizmo.create();
 	this->orbit.create();
 }
@@ -59,7 +61,7 @@ void OutputWindow::paintGL() {
 	// QMatrix4x4 projection;
 	// projection.perspective(45, 4/3, 0.1, 100);
 
-
+	this->central_body.render();
 	this->xyz_gizmo.render();
 	this->orbit.render();
 
