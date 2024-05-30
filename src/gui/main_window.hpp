@@ -23,6 +23,8 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
+	void export_data();
+
 	void simulate();
 	void load_example_values();
 
@@ -38,6 +40,7 @@ private:
 	Ui::MainWindow *ui;
 
 	orbsim::Satellite sat;
+	orbsim::SimData sim_data;
 };
 
 

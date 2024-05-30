@@ -10,21 +10,29 @@
 
 #include <QComboBox>
 #include <QDoubleSpinBox>
+#include <QFileDialog>
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QStandardPaths>
 #include <QString>
 #include <QWidget>
 
 #include <exception>
+#include <fstream>
 #include <stdexcept>
 
 
 MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent), ui(new Ui::MainWindow) {
+	: QMainWindow(parent), ui(new Ui::MainWindow),
+	  sim_data(orbsim::SimData{0, nullptr, nullptr, nullptr}) {
 
 	ui->setupUi(this);
+
+	connect(ui->actionExport, &QAction::triggered,
+			this, &MainWindow::export_data);
+
 
 	connect(ui->ChooseInitCond, &QComboBox::currentIndexChanged,
 			this, &MainWindow::update_init_cond);
@@ -70,6 +78,30 @@ MainWindow::~MainWindow() {
 	delete ui;
 }
 
+void MainWindow::export_data() {
+
+	if (this->sim_data.steps == 0) {
+		QMessageBox err_msg;
+		err_msg.setText("No simulation data found!");
+		err_msg.exec();
+		return;
+	}
+
+	QString file_path = QFileDialog::getSaveFileName(this,
+		tr("Export Simulated Data"),
+		QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
+		tr("Text Files (*.txt)")
+	);
+
+	std::string output;
+	for (int i = 0; i < sim_data.steps - 1; i++) {
+		output += sim_data.pos_arr[i].to_str() + " " + sim_data.vel_arr[i].to_str() + "\n";
+	}
+
+	std::ofstream o(file_path.toStdString());
+	o << output;
+}
+
 void MainWindow::simulate() {
 
 	// this is a bit dumb, but we could fix it in the future
@@ -100,7 +132,7 @@ void MainWindow::simulate() {
 		break;
 	}
 
-	orbsim::SimData sim_data = this->sat.propagate();
+	this->sim_data = this->sat.propagate();
 
 	QString output;
 	for (int i = 0; i < sim_data.steps - 1; i++) {
