@@ -1,8 +1,6 @@
 #ifndef CELESTIAL_OBJ_HPP
 #define CELESTIAL_OBJ_HPP
 
-#include <string>
-
 
 namespace orbsim {
 

@@ -1,5 +1,6 @@
 #include "euler.hpp"
 #include "integrator.hpp"
+#include "diff_eq.hpp"
 #include "math_obj.hpp"
 
 #include <cmath>
@@ -9,9 +10,9 @@
 
 namespace orbsim {
 
-Euler::Euler(double M, double R0, Vec3 x0, Vec3 v0,
+Euler::Euler(DESystem<Vec3> de_system, double M, double R0, Vec3 x0, Vec3 v0,
 			 double t_i, double t_f, int steps)
-	: Integrator(M, R0, x0, v0, t_i, t_f, steps) {}
+	: Integrator(de_system, M, R0, x0, v0, t_i, t_f, steps) {}
 
 Euler *Euler::copy() const { return new Euler(*this); }
 
@@ -23,8 +24,8 @@ void Euler::integrate() {
 	this->vel_arr[0] /= this->V_dim;
 
 	for (int i = 0; i < steps - 1; i++) {
-		this->pos_arr[i + 1] = this->pos_arr[i] + (this->vel_arr[i]) * delta_t;
-		this->vel_arr[i + 1] = this->vel_arr[i] + (- this->pos_arr[i] / (std::pow(this->pos_arr[i].len(), 3))) * delta_t;
+		this->pos_arr[i + 1] = this->pos_arr[i] + this->de_system.get_rhs(1)(this->vel_arr[i]) * delta_t;
+		this->vel_arr[i + 1] = this->vel_arr[i] + this->de_system.get_rhs(2)(this->pos_arr[i]) * delta_t;
 
 		// Convert back to kilometers
 		this->pos_arr[i] *= this->R_dim;

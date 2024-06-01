@@ -2,6 +2,7 @@
 #define RK4_HPP
 
 #include "simulation/integrators/integrator.hpp"
+#include "simulation/diff_eq.hpp"
 #include "simulation/math_obj.hpp"
 
 
@@ -13,7 +14,7 @@ namespace orbsim {
 class RK4 : public Integrator {
 
 public:
-	RK4(double M, double R0, Vec3 x0, Vec3 v0,
+	RK4(DESystem<Vec3> de_system, double M, double R0, Vec3 x0, Vec3 v0,
 		double t_i, double t_f, int steps);
 
 	RK4 *copy() const override;
