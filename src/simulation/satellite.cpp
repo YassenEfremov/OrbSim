@@ -5,6 +5,7 @@
 #include "integrators/verlet.hpp"
 #include "integrators/rk4.hpp"
 #include "celestial_obj.hpp"
+#include "diff_eq.hpp"
 #include "math_obj.hpp"
 
 #include <cmath>
@@ -35,7 +36,7 @@ Satellite::Satellite(CartElem cart_elem,
 
 	calc_kepl();
 
-	IntegratorFactory integ_fact(cel_obj, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps);
+	IntegratorFactory integ_fact(orbit_de, cel_obj, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps);
 	this->integ = integ_fact.create(integ_name);
 }
 
@@ -55,7 +56,7 @@ Satellite::Satellite(KeplElem kepl_elem,
 
 	calc_cart();
 
-	IntegratorFactory integ_fact(cel_obj, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps);
+	IntegratorFactory integ_fact(orbit_de, cel_obj, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps);
 	this->integ = integ_fact.create(integ_name);
 }
 
@@ -148,7 +149,7 @@ void Satellite::set_integ(std::string integ_name) {
 	this->integ_name = integ_name;
 
 	delete this->integ;
-	IntegratorFactory integ_fact(cel_obj, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps);
+	IntegratorFactory integ_fact(orbit_de, cel_obj, this->cart_elem.pos, this->cart_elem.vel, t_start, t_end, t_steps);
 	this->integ = integ_fact.create(integ_name);
 }
 

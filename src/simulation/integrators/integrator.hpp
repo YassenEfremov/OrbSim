@@ -1,6 +1,7 @@
 #ifndef INTEGRATOR_HPP
 #define INTEGRATOR_HPP
 
+#include "simulation/diff_eq.hpp"
 #include "simulation/math_obj.hpp"
 
 
@@ -12,7 +13,7 @@ namespace orbsim {
 class Integrator {
 
 public:
-	Integrator(double M, double R0, Vec3 x0, Vec3 v0,
+	Integrator(DESystem<Vec3> de_system, double M, double R0, Vec3 x0, Vec3 v0,
 			   double t_i, double t_f, int steps);
 	Integrator(const Integrator &other);
 	Integrator &operator=(const Integrator &other);
@@ -39,6 +40,7 @@ public:
 protected:
 	double M;	// [kg]
 	double R0;	// [km]
+	DESystem<Vec3> de_system;
 	int steps;
 	double delta_t;
 	double *time_arr;

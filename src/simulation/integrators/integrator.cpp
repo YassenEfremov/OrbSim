@@ -1,4 +1,5 @@
 #include "integrator.hpp"
+#include "diff_eq.hpp"
 #include "math_obj.hpp"
 
 #include <cmath>
@@ -9,9 +10,10 @@
 
 namespace orbsim {
 
-Integrator::Integrator(double M, double R0, Vec3 x0, Vec3 v0,
+Integrator::Integrator(DESystem<Vec3> de_system, double M, double R0,
+					   Vec3 x0, Vec3 v0,
 					   double t_i, double t_f, int steps)
-	: steps(steps), delta_t((t_f - t_i) / (steps - 1)),
+	: de_system(de_system), steps(steps), delta_t((t_f - t_i) / (steps - 1)),
 	  time_arr(new double[steps]{}),
 	  pos_arr(new Vec3[steps]{}), vel_arr(new Vec3[steps]{}) {
 	
@@ -41,7 +43,7 @@ Integrator::Integrator(double M, double R0, Vec3 x0, Vec3 v0,
 }
 
 Integrator::Integrator(const Integrator &other)
-	: steps(other.steps), delta_t(other.delta_t),
+	: de_system(other.de_system), steps(other.steps), delta_t(other.delta_t),
 	  time_arr(new double[other.steps]{}),
 	  pos_arr(new Vec3[other.steps]{}), vel_arr(new Vec3[other.steps]{}) {
 
@@ -56,6 +58,7 @@ Integrator::Integrator(const Integrator &other)
 
 Integrator &Integrator::operator=(const Integrator &other) {
 	Integrator *integ_copy = other.copy();
+	std::swap(this->de_system, integ_copy->de_system);
 	std::swap(this->M, integ_copy->M);
 	std::swap(this->R0, integ_copy->R0);
 	std::swap(this->steps, integ_copy->steps);
