@@ -14,7 +14,7 @@ template <typename I>
 class IntegratorTest : public testing::Test {
 public:
 	IntegratorTest()
-		: integ(orbsim::Earth.mass, orbsim::Earth.radius,
+		: integ(orbsim::orbit_de, orbsim::Earth.mass, orbsim::Earth.radius,
 				orbsim::Vec3{7000,0,0}, orbsim::Vec3{0,5.1,7.3}, 0, 1000, 100) {}
 
 	I integ;
@@ -53,7 +53,7 @@ TYPED_TEST(IntegratorTest, CopyConstructor) {
 TYPED_TEST(IntegratorTest, Assignment) {
 	using namespace orbsim;
 	
-	TypeParam new_integ1(Earth.mass, Earth.radius, Vec3{7300,0,100}, Vec3{0,5,7}, 100, 2000, 1500);
+	TypeParam new_integ1(orbit_de, Earth.mass, Earth.radius, Vec3{7300,0,100}, Vec3{0,5,7}, 100, 2000, 1500);
 	new_integ1 = this->integ;
 
 	EXPECT_EQ(new_integ1.get_steps(), 100);
@@ -61,7 +61,7 @@ TYPED_TEST(IntegratorTest, Assignment) {
 	EXPECT_EQ(new_integ1.get_vel_arr()[0], (Vec3{0,5.1,7.3}));
 
 
-	TypeParam *new_integ2 = new TypeParam(Earth.mass, Earth.radius, Vec3{7300,0,100}, Vec3{0,5,7}, 100, 2000, 1500);
+	TypeParam *new_integ2 = new TypeParam(orbit_de, Earth.mass, Earth.radius, Vec3{7300,0,100}, Vec3{0,5,7}, 100, 2000, 1500);
 	*new_integ2 = this->integ;
 	delete new_integ2;
 

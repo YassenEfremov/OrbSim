@@ -11,7 +11,7 @@
 TEST(IntegratorFactoryTest, Euler) {
 	using namespace orbsim;
 
-	IntegratorFactory integ_factory(Earth, Vec3{7000,0,0}, {0,0,0}, 0, 1000, 100);
+	IntegratorFactory integ_factory(orbit_de, Earth, Vec3{7000,0,0}, {0,0,0}, 0, 1000, 100);
 	Integrator *integ = integ_factory.create("Euler");
 
 	EXPECT_NE(dynamic_cast<Euler *>(integ), nullptr);
@@ -25,7 +25,7 @@ TEST(IntegratorFactoryTest, Euler) {
 TEST(IntegratorFactoryTest, Verlet) {
 	using namespace orbsim;
 
-	IntegratorFactory integ_factory(Earth, Vec3{7000,0,0}, {0,0,0}, 0, 1000, 100);
+	IntegratorFactory integ_factory(orbit_de, Earth, Vec3{7000,0,0}, {0,0,0}, 0, 1000, 100);
 	Integrator *integ = integ_factory.create("Verlet");
 
 	EXPECT_NE(dynamic_cast<Verlet *>(integ), nullptr);
@@ -39,7 +39,7 @@ TEST(IntegratorFactoryTest, Verlet) {
 TEST(IntegratorFactoryTest, RK4) {
 	using namespace orbsim;
 
-	IntegratorFactory integ_factory(Earth, Vec3{7000,0,0}, {0,0,0}, 0, 1000, 100);
+	IntegratorFactory integ_factory(orbit_de, Earth, Vec3{7000,0,0}, {0,0,0}, 0, 1000, 100);
 	Integrator *integ = integ_factory.create("RK4");
 	
 	EXPECT_NE(dynamic_cast<RK4 *>(integ), nullptr);
